@@ -7,7 +7,7 @@ Constants.TITLE = "Fight Pub"
 Constants.AUTHOR = "Team BetaCorp: Bob Somers, Chris Gibson, and Paul Morales"
 
 -- Screen dimensions.
-Constants.SCREEN = Vector(1280, 720)
+Constants.SCREEN = Vector(960, 540)
 Constants.CENTER = Constants.SCREEN / 2
 
 -- Debug mode.
