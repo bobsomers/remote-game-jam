@@ -41,6 +41,13 @@ function PlayState:init()
        self.entities:register(self.pubmates[i])
     end
     
+    -- Load bros
+    self.bros = {}
+    for i=1, 20 do
+       self.bros[i] = Bro(self.collider)
+       self.bros[i].shape:moveTo(1000 + i*10, 0)
+       self.entities:register(self.bros[i])
+    end
     
     -- Load the drunk camera.
     self.cam = DrunkCam()
@@ -144,8 +151,16 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     elseif pubmate and world then
         pubmate:collideWorld(world, Vector(mtvX, mtvY))
         pubmate:jump()
+    elseif bro and world then
+        bro:collideWorld(world, Vector(mtvX, mtvY))
+        bro:jump()
     elseif player and pubmate then
         print("I love you, man!")
+    elseif player and bro then
+        print("Douchebag!")
+    elseif pubmate and bro then
+        pubmate:kill()
+        print("FFFUUUUUUUUU!!!")
     else
         print("No collision resolver for collision!")
     end

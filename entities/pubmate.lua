@@ -19,6 +19,10 @@ function PubMate:reset()
     self.velocity = Vector(0, 0)
 end
 
+function PubMate:kill()
+    self.shape:moveTo(10000,10000)
+end
+
 function PubMate:jump()
     --[[
     if self.velocity.y > 0 then
