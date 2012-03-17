@@ -8,6 +8,7 @@ function love.conf(t)
     -- Graphic settings.
     t.screen.width = Constants.SCREEN.x
     t.screen.height = Constants.SCREEN.y
+    t.screen.vsync = false
 
     -- Show console on Windows?
     t.console = Constants.DEBUG_MODE
