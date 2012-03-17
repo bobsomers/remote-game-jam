@@ -33,6 +33,11 @@ function PlayState:init()
     self.player.shape:moveTo(250, 0)
     self.entities:register(self.player)
 
+    -- Load pubmate.
+    self.pubmate = PubMate(self.collider)
+    self.pubmate.shape:moveTo(300, 0)
+    self.entities:register(self.pubmate)
+    
     -- Load the drunk camera.
     self.cam = DrunkCam()
     local playerX, playerY = self.player.shape:center()
@@ -132,6 +137,10 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     -- Dispatch the appropriate collision resolver.
     if player and world then
         player:collideWorld(world, Vector(mtvX, mtvY))
+    elseif pubmate and world then
+        pubmate:collideWorld(world, Vector(mtvX, mtvY))
+    elseif player and pubmate then
+        print("I love you, man!")
     else
         print("No collision resolver for collision!")
     end
