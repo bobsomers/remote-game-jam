@@ -1,5 +1,5 @@
 # Remote Game Jam
 
 * Bob Somers
-* Chris Gibson
+* Chris Gibson (mrvoxel)
 * Paul Morales (Ubersmake)
