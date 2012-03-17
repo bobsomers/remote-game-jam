@@ -1,8 +1,13 @@
 local Gamestate = require "hump.gamestate"
+local MapLoader = require "AdvTiledLoader.Loader"
 
 local PlayState = Gamestate.new()
 
 function PlayState:init()
+    MapLoader.path = "maps/"
+    self.map = MapLoader.load("test.tmx")
+
+    -- Reset transient game state.
     self:reset()
 end
 
@@ -15,8 +20,7 @@ function PlayState:update(dt)
 end
 
 function PlayState:draw()
-    -- TODO
-    love.graphics.print("Hello play state!", 400, 300)
+    self.map:draw()
 end
 
 return PlayState
