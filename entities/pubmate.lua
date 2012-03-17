@@ -4,7 +4,13 @@ local Constants = require "constants"
 
 local PubMate = Class(function(self)
     -- TODO
+
+    self:reset()
 end)
+
+function PubMate:reset()
+    -- TODO
+end
 
 function PubMate:update(dt)
     -- TODO

@@ -9,10 +9,14 @@ local Player = Class(function(self, collider)
     self.shape.kind = "player"
     collider:addToGroup("player", self.shape)
 
-    self.velocity = Vector(0, 0)
-
     self.MOVE_SPEED = Constants.PLAYER_SPEED
+
+    self:reset()
 end)
+
+function Player:reset()
+    self.velocity = Vector(0, 0)
+end
 
 function Player:collideWorld(tileShape, mtv)
     -- Apply minimum translation vector to resolve the collision.

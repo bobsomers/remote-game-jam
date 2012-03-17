@@ -14,6 +14,13 @@ function EntityManager:register(entity)
     end
 end
 
+function EntityManager:reset()
+    -- Reset all entities that are registered.
+    for i, entity in ipairs(self.entities) do
+        entity:reset()
+    end
+end
+
 -- Returns nil of no entity with that shape was found.
 function EntityManager:findByShape(shape)
     return self.shapeIndex[shape]

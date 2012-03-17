@@ -4,7 +4,13 @@ local Constants = require "constants"
 
 local Bro = Class(function(self)
     -- TODO
+
+    self:reset()
 end)
+
+function Bro:reset()
+    -- TODO
+end
 
 function Bro:update(dt)
     -- TODO
