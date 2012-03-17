@@ -9,8 +9,8 @@ local PubMate = Class(function(self, collider)
     self.shape.kind = "pubmate"
     collider:addToGroup("pubmate", self.shape)
 
-    self.MOVE_SPEED = (Constants.PLAYER_SPEED / 2)
-    self.JUMP_VELOCITY = (-Constants.PLAYER_JUMP / 2)
+    self.MOVE_SPEED = (Constants.PLAYER_SPEED / 4)
+    self.JUMP_VELOCITY = (-Constants.PLAYER_JUMP / 4)
 
     self:reset()
 end)
@@ -35,7 +35,7 @@ end
 
 function PubMate:collideWorld(tileShape, mtv)
     -- Apply minimum translation vector to resolve the collision.
-    self.shape:move(mtv.x, mtv.y)
+    self.shape:move(mtv.x, mtv.y)    
 
     -- If we corrected the player in the Y direction, their Y velocity is 0.
     if mtv.y ~= 0 then
@@ -44,8 +44,8 @@ function PubMate:collideWorld(tileShape, mtv)
 end
 
 function PubMate:update(dt)
-    -- Always be moving toward the player
-    -- TODO
+    -- Always be moving right
+    self.velocity.x = self.MOVE_SPEED
 
     -- Compute player's position based on velocity and gravity.
     local posX, posY = self.shape:center()
