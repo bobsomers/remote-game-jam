@@ -30,11 +30,13 @@ function PlayState:init()
 
     -- Load the player.
     self.player = Player(self.collider)
-    self.player.shape:moveTo(375, 0)
+    self.player.shape:moveTo(250, 0)
     self.entities:register(self.player)
 
     -- Load the drunk camera.
     self.cam = DrunkCam()
+    local playerX, playerY = self.player.shape:center()
+    self.cam:teleport(Vector(playerX, playerY))
     self.entities:register(self.cam)
 
     -- Reset transient game state.
@@ -82,6 +84,12 @@ function PlayState:draw()
     self.entities:draw()
 
     self.cam:detach()
+end
+
+function PlayState:keypressed(key)
+    if key == " " or key == "w" then
+        self.player:jump()
+    end
 end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)

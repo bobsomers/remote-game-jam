@@ -14,7 +14,11 @@ end)
 function DrunkCam:reset()
     self.time = 0
     self.translateVelocity = Vector(0, 0)
-    self.zoomVelocity = 0
+end
+
+function DrunkCam:teleport(position)
+    self.target = position
+    self.translateVelocity = Vector(0, 0)
 end
 
 function DrunkCam:focus(position)

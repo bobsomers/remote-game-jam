@@ -10,12 +10,20 @@ local Player = Class(function(self, collider)
     collider:addToGroup("player", self.shape)
 
     self.MOVE_SPEED = Constants.PLAYER_SPEED
+    self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
 
     self:reset()
 end)
 
 function Player:reset()
     self.velocity = Vector(0, 0)
+end
+
+function Player:jump()
+    -- Apply some instantaneous velocity in the Y direction.
+    local x, y = self.shape:center()
+    self.shape:moveTo(x, y - 1)
+    self.velocity.y = self.JUMP_VELOCITY
 end
 
 function Player:collideWorld(tileShape, mtv)
