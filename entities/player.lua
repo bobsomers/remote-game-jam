@@ -5,8 +5,14 @@ local Constants = require "constants"
 local Player = Class(function(self, collider)
     self.SIZE = Vector(32, 64)
     self.shape = collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
+    self.shape.kind = "player"
+    collider:addToGroup("player", self.shape)
     self.velocity = Vector(0, 0)
 end)
+
+function Player:collideWorld(tileShape)
+    print("Player resolver!")
+end
 
 function Player:update(dt)
     -- Update player's position based on velocity and gravity.

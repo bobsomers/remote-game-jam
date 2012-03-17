@@ -14,8 +14,7 @@ function PlayState:init()
     -- Set up the collision detection engine.
     self.collider = Collider(100, function(dt, shape1, shape2, mtvX, mtvY)
         -- Just forwards to self instance through closure.
-        --self:collide(dt, shape1, shape2, mtvX, mtvY)
-        print("COLLISION!")
+        self:collide(dt, shape1, shape2, mtvX, mtvY)
     end)
 
     -- Load the tile map and set up solid tiles.
@@ -45,6 +44,9 @@ function PlayState:update(dt)
     -- Update all entities.
     self.entities:update(dt)
 
+    -- Update collision detection.
+    self.collider:update(dt)
+
     -- Update FPS in window title (if DEBUG MODE is on).
     if Constants.DEBUG_MODE then
         self.lastFpsTime = self.lastFpsTime + dt
@@ -66,7 +68,48 @@ function PlayState:draw()
 end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
-    -- TODO
+    local player, pubmate, bro, world
+    
+    -- What is shape1?
+    if shape1.kind then
+        if shape1.kind == "player" then
+            player = self.entities:findByShape(shape1)
+        elseif shape1.kind == "pubmate" then
+            pubmate = self.entities:findByShape(shape1)
+        elseif shape1.kind == "bro" then
+            bro = self.entities:findByShape(shape1)
+        elseif shape1.kind == "world" then
+            world = shape1
+        else
+            print("Unknown shape kind " .. shape1.kind .. "?")
+        end
+    else
+        print("Shape1 has no kind!")
+    end
+
+    -- What is shape2?
+    if shape2.kind then
+        if shape2.kind == "player" then
+            player = self.entities:findByShape(shape2)
+        elseif shape2.kind == "pubmate" then
+            pubmate = self.entities:findByShape(shape2)
+        elseif shape2.kind == "bro" then
+            bro = self.entities:findByShape(shape2)
+        elseif shape2.kind == "world" then
+            world = shape2
+        else
+            print("Unknown shape kind " .. shape2.kind .. "?")
+        end
+    else
+        print("Shape2 has no kind!")
+    end
+
+    -- Dispatch the appropriate collision resolver.
+    if player and world then
+        player:collideWorld(world)
+    else
+        print("No collision resolver for collision!")
+    end
 end
 
 function PlayState:setupTileCollisions(layerName)
