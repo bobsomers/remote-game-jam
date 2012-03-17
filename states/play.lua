@@ -14,7 +14,8 @@ function PlayState:init()
     -- Set up the collision detection engine.
     self.collider = Collider(100, function(dt, shape1, shape2, mtvX, mtvY)
         -- Just forwards to self instance through closure.
-        self:collide(dt, shape1, shape2, mtvX, mtvY)
+        --self:collide(dt, shape1, shape2, mtvX, mtvY)
+        print("COLLISION!")
     end)
 
     -- Load the tile map and set up solid tiles.
@@ -24,17 +25,20 @@ function PlayState:init()
     -- Setup passive collision shapes for tiles in the collidable layer.
     self:setupTileCollisions("world")
 
+    -- Load the entity manager.
+    self.entities = EntityManager()
+
+    -- Load the player.
+    self.player = Player(self.collider)
+    self.player.shape:moveTo(375, 100)
+    self.entities:register(self.player)
+
     -- Reset transient game state.
     self:reset()
 end
 
 function PlayState:reset()
     self.lastFpsTime = 0
-    self.entities = EntityManager()
-
-    self.player = Player()
-    self.player.position = Vector(375, 100)
-    self.entities:register(self.player)
 end
 
 function PlayState:update(dt)

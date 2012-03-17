@@ -13,4 +13,7 @@ Constants.CENTER = Constants.SCREEN / 2
 -- Debug mode.
 Constants.DEBUG_MODE = true
 
+-- World constants.
+Constants.GRAVITY = 20 -- 300 pixels/sec^2, where 32 pixels ~ 1 meter
+
 return Constants
