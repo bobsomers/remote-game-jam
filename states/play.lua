@@ -1,5 +1,8 @@
 local Gamestate = require "hump.gamestate"
 local MapLoader = require "AdvTiledLoader.Loader"
+local Player = require "entities.player"
+local PubMate = require "entities.pubmate"
+local Bro = require "entities.bro"
 
 local PlayState = Gamestate.new()
 
