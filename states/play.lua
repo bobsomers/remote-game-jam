@@ -106,7 +106,7 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
 
     -- Dispatch the appropriate collision resolver.
     if player and world then
-        player:collideWorld(world)
+        player:collideWorld(world, Vector(mtvX, mtvY))
     else
         print("No collision resolver for collision!")
     end

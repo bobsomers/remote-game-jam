@@ -10,8 +10,10 @@ local Player = Class(function(self, collider)
     self.velocity = Vector(0, 0)
 end)
 
-function Player:collideWorld(tileShape)
-    print("Player resolver!")
+function Player:collideWorld(tileShape, mtv)
+    -- Apply minimum translation vector's Y component to counteract gravity.
+    self.velocity.y = 0
+    self.shape:move(0, mtv.y)
 end
 
 function Player:update(dt)
