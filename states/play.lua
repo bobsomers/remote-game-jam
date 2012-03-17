@@ -8,7 +8,7 @@ local PlayState = Gamestate.new()
 
 function PlayState:init()
     MapLoader.path = "maps/"
-    self.map = MapLoader.load("test.tmx")
+    self.map = MapLoader.load("test2.tmx")
 
     -- Reset transient game state.
     self:reset()

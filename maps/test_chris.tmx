@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="test_tileset" tilewidth="32" tileheight="32">
+  <image source="map_test.png" width="256" height="256"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2GtP2zAABVAztsHeDxh7sAH7tM/8/z+HrWLhWUmaNqGt03OkKyRw0uLb1E5CAABg6V7v+w3wn/N9v4FGnMS8mHFcn9zHq5jPVT5OOO/SnMa8n3FcnzHXx9mE8y9F3zx/i7kaMW6sDxuMPeZeuuY5dfE75jo8dTK1j20cYy9pnn/GvAxP68OfmMuYi5ibgXHJWc/PrnVi27XimHp5E/PuMW+L36dObkaM26Vj6uWQ6WHY/Y5eRw+78z2s1qKuTLnPWbJ/z3TedG/5K+ZTT3a9j2tN/Vn+seV5Th6P7+viS9jvfqEFqYs8f2m+vobVvnddJ+V+N+9xyz1aV/p6GPpua/17bpPnULmL3EP6HrkNw53MvQaXn4d1yfdHLfUz9j677OKuOm5dJ8kcvWzSRav9lPfZdfKzkbqLfFzZ45hOktzL37C6Nq8GxpamdtHKPiHNa9/7Tc+ryvX2rjqu/n/GdpLkPVX5TCzrWh/m7qLFPurU89N1XeV567vmuub3euBvz5nW+1haDrEPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADh0D1eRFt8=
+  </data>
+ </layer>
+</map>
