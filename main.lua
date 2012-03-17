@@ -1,3 +1,5 @@
+local Constants = require "constants"
+
 function love.load()
 
 end
