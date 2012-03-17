@@ -1,13 +1,7 @@
-local Constants = require "constants"
+local Gamestate = require "hump.gamestate"
+local PlayState = require "states.play"
 
 function love.load()
-
-end
-
-function love.update(dt)
-
-end
-
-function love.draw()
-    love.graphics.print("Hello game jam!", 400, 300)
+    Gamestate.registerEvents()
+    Gamestate.switch(PlayState)
 end
