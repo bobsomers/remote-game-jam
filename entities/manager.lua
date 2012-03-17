@@ -5,7 +5,7 @@ local EntityManager = Class(function(self)
     self.shapeIndex = {}
 end)
 
-function EntityManager:registerEntity(entity)
+function EntityManager:register(entity)
     -- Add the entity to our list of entities and shape index (if it has a
     -- shape).
     table.insert(self.entities, entity)
@@ -15,7 +15,7 @@ function EntityManager:registerEntity(entity)
 end
 
 -- Returns nil of no entity with that shape was found.
-function EntityManager:findEntityByShape(shape)
+function EntityManager:findByShape(shape)
     return self.shapeIndex[shape]
 end
 

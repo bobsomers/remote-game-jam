@@ -1,4 +1,5 @@
 local Gamestate = require "hump.gamestate"
+local Vector = require "hump.vector"
 local MapLoader = require "AdvTiledLoader.Loader"
 local Collider = require "hardoncollider"
 local EntityManager = require "entities.manager"
@@ -18,30 +19,10 @@ function PlayState:init()
 
     -- Load the tile map and set up solid tiles.
     MapLoader.path = "maps/"
-    self.map = MapLoader.load("test2.tmx")
+    self.map = MapLoader.load("test_chris.tmx")
 
     -- Setup passive collision shapes for tiles in the collidable layer.
-    local layer = map.tl["collidable"]
-    for x = 1, map.width do
-        for y = 1, map.height do
-            if layer.tileData[y] then
-                local tile = map.tiles[layer.tileData[y][x]]
-                if tile.properties.solid then
-                    local shape = self.collider:addRectangle(
-                        (x - 1) * 32, (y - 1) * 32,
-                        32, 32
-                    )
-                    shape.kind = "tile"
-                    self.collider:addToGroup("world", shape)
-                    self.collider:setPassive(shape)
-                elseif tile.properties.rampUp then
-                    -- TODO
-                elseif tile.properties.rampDown then
-                    -- TODO
-                end
-            end
-        end
-    end
+    self:setupTileCollisions("world")
 
     -- Reset transient game state.
     self:reset()
@@ -50,6 +31,10 @@ end
 function PlayState:reset()
     self.lastFpsTime = 0
     self.entities = EntityManager()
+
+    self.player = Player()
+    self.player.position = Vector(375, 100)
+    self.entities:register(self.player)
 end
 
 function PlayState:update(dt)
@@ -78,6 +63,36 @@ end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     -- TODO
+end
+
+function PlayState:setupTileCollisions(layerName)
+    local layer = map.tl[layerName]
+    if layer == nil then
+        print("No tile layer " .. layerName .. "!")
+        return
+    end
+    for x = 1, map.width do
+        for y = 1, map.height do
+            if layer.tileData[y] then
+                local tile = map.tiles[layer.tileData[y][x]]
+                if tile then
+                    if tile.properties.solid then
+                        local shape = self.collider:addRectangle(
+                            (x - 1) * 32, (y - 1) * 32,
+                            32, 32
+                        )
+                        shape.kind = layerName
+                        self.collider:addToGroup(layerName, shape)
+                        self.collider:setPassive(shape)
+                    elseif tile.properties.rampUp then
+                        -- TODO
+                    elseif tile.properties.rampDown then
+                        -- TODO
+                    end
+                end
+            end
+        end
+    end
 end
 
 return PlayState
