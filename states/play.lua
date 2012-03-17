@@ -7,6 +7,7 @@ local Constants = require "constants"
 local Player = require "entities.player"
 local PubMate = require "entities.pubmate"
 local Bro = require "entities.bro"
+local DrunkCam = require "entities.drunkcam"
 
 local PlayState = Gamestate.new()
 
@@ -32,12 +33,19 @@ function PlayState:init()
     self.player.shape:moveTo(375, 0)
     self.entities:register(self.player)
 
+    -- Load the drunk camera.
+    self.cam = DrunkCam()
+    self.entities:register(self.cam)
+
     -- Reset transient game state.
     self:reset()
 end
 
 function PlayState:reset()
     self.lastFpsTime = 0
+
+    -- Reset all entities.
+    self.entities:reset()
 end
 
 function PlayState:update(dt)
@@ -46,6 +54,10 @@ function PlayState:update(dt)
 
     -- Update collision detection.
     self.collider:update(dt)
+
+    -- Keep the camera focused on the player.
+    local focusX, focusY = self.player.shape:center()
+    self.cam:focus(Vector(focusX, focusY))
 
     -- Update FPS in window title (if DEBUG MODE is on).
     if Constants.DEBUG_MODE then
@@ -63,8 +75,13 @@ function PlayState:update(dt)
 end
 
 function PlayState:draw()
+
+    self.cam:attach()
+
     self.map:draw()
     self.entities:draw()
+
+    self.cam:detach()
 end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
