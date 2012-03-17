@@ -20,6 +20,13 @@ function Player:reset()
 end
 
 function Player:jump()
+    --[[
+    if self.velocity.y > 0 then
+        -- Can't jump!
+        return
+    end
+    --]]
+
     -- Apply some instantaneous velocity in the Y direction.
     local x, y = self.shape:center()
     self.shape:moveTo(x, y - 1)

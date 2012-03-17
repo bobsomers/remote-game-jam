@@ -77,6 +77,36 @@
     <property name="solid" value="true"/>
    </properties>
   </tile>
+  <tile id="18">
+   <properties>
+    <property name="rampUp" value="true"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="rampDown" value="true"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="rampUp" value="true"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="rampDown" value="true"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="rampUp" value="true"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="rampDown" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="world" width="100" height="100">
   <data encoding="base64" compression="zlib">

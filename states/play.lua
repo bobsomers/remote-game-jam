@@ -157,9 +157,23 @@ function PlayState:setupTileCollisions(layerName)
                         self.collider:addToGroup(layerName, shape)
                         self.collider:setPassive(shape)
                     elseif tile.properties.rampUp then
-                        -- TODO
+                        local shape = self.collider:addPolygon(
+                            (x - 1) * 32, y * 32,
+                            x * 32, y * 32,
+                            x * 32, (y - 1) * 32
+                        )
+                        shape.kind = layerName
+                        self.collider:addToGroup(layerName, shape)
+                        self.collider:setPassive(shape)
                     elseif tile.properties.rampDown then
-                        -- TODO
+                        local shape = self.collider:addPolygon(
+                            (x - 1) * 32, (y - 1) * 32,
+                            (x - 1) * 32, y * 32,
+                            x * 32, y * 32
+                        )
+                        shape.kind = layerName
+                        self.collider:addToGroup(layerName, shape)
+                        self.collider:setPassive(shape)
                     end
                 end
             end
