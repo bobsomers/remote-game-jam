@@ -4,20 +4,37 @@ local Constants = require "constants"
 
 local Player = Class(function(self, collider)
     self.SIZE = Vector(32, 64)
+
     self.shape = collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "player"
     collider:addToGroup("player", self.shape)
+
     self.velocity = Vector(0, 0)
+
+    self.MOVE_SPEED = Constants.PLAYER_SPEED
 end)
 
 function Player:collideWorld(tileShape, mtv)
-    -- Apply minimum translation vector's Y component to counteract gravity.
-    self.velocity.y = 0
-    self.shape:move(0, mtv.y)
+    -- Apply minimum translation vector to resolve the collision.
+    self.shape:move(mtv.x, mtv.y)
+
+    -- If we corrected the player in the Y direction, their Y velocity is 0.
+    if mtv.y ~= 0 then
+        self.velocity.y = 0
+    end
 end
 
 function Player:update(dt)
-    -- Update player's position based on velocity and gravity.
+    -- Check for keyboard input.
+    self.velocity.x = 0
+    if love.keyboard.isDown("a") then
+        self.velocity.x = -self.MOVE_SPEED
+    end
+    if love.keyboard.isDown("d") then
+        self.velocity.x = self.MOVE_SPEED
+    end
+
+    -- Compute player's position based on velocity and gravity.
     local posX, posY = self.shape:center()
     posX = posX + (self.velocity.x * dt) -- No acceleration in X direction.
     posY = posY + (self.velocity.y * dt) + (0.5 * Constants.GRAVITY * dt * dt)

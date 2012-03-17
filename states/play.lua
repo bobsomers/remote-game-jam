@@ -29,7 +29,7 @@ function PlayState:init()
 
     -- Load the player.
     self.player = Player(self.collider)
-    self.player.shape:moveTo(375, 100)
+    self.player.shape:moveTo(375, 0)
     self.entities:register(self.player)
 
     -- Reset transient game state.

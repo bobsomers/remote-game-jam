@@ -14,6 +14,9 @@ Constants.CENTER = Constants.SCREEN / 2
 Constants.DEBUG_MODE = true
 
 -- World constants.
-Constants.GRAVITY = 20 -- 300 pixels/sec^2, where 32 pixels ~ 1 meter
+Constants.GRAVITY = 300 -- 300 pixels/sec^2, where 32 pixels ~ 1 meter
+
+-- Player constants.
+Constants.PLAYER_SPEED = 160 -- 160 pixels/sec
 
 return Constants
