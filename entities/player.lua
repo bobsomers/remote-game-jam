@@ -2,6 +2,7 @@ local Class = require "hump.class"
 local Vector = require "hump.vector"
 local Constants = require "constants"
 local gfx = love.graphics
+local Beer = require "entities.beer"
 
 local Player = Class(function(self, collider, camera)
     self.collider = collider
@@ -14,6 +15,8 @@ local Player = Class(function(self, collider, camera)
     self.shape.kind = "player"
     self.collider:addToGroup("player", self.shape)
 
+    self.beer = Beer(self, collider)
+
 	self.MAX_JUMPS = 2
     self.MOVE_SPEED = Constants.PLAYER_SPEED
     self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
@@ -22,7 +25,7 @@ local Player = Class(function(self, collider, camera)
 	self.anim = {}
 	
 	-- Animation for idle standing position when facing left
-	self.anim.idleLeftImg = love.graphics.newImage("images/gen_stand_left.png")
+	self.anim.idleLeftImg = love.graphics.newImage("images/hero_stand_left.png")
 	self.anim.idleLeft = newAnimation(self.anim.idleLeftImg, 32, 32, 0.3, 2)
 	self.anim.idleLeft.faceCenter = {
 		{x=18, y=29}, 
@@ -30,7 +33,7 @@ local Player = Class(function(self, collider, camera)
 	}
 	
 	-- Animation for idle standing position when facing right
-	self.anim.idleRightImg = love.graphics.newImage("images/gen_stand_right.png")
+	self.anim.idleRightImg = love.graphics.newImage("images/hero_stand_right.png")
 	self.anim.idleRight = newAnimation(self.anim.idleRightImg, 32, 32, 0.3, 2)
 	self.anim.idleRight.faceCenter = {
 		{x=14, y=29}, 
@@ -38,7 +41,7 @@ local Player = Class(function(self, collider, camera)
 	}
 	
 	-- Animation for walking position when facing left
-	self.anim.walkLeftImg = love.graphics.newImage("images/gen_walk_left.png")
+	self.anim.walkLeftImg = love.graphics.newImage("images/hero_walk_left.png")
 	self.anim.walkLeft = newAnimation(self.anim.walkLeftImg, 32, 32, 0.2, 4)
 	self.anim.walkLeft.faceCenter = {
 		{x=16, y=32}, 
@@ -89,7 +92,7 @@ local Player = Class(function(self, collider, camera)
 	self.anim.gunLeft = {}
 	self.anim.gunLeft.center = {x=27, y=2}
 	
-	self.anim.gunRightImg = love.graphics.newImage("images/gun_left.png")
+	self.anim.gunRightImg = love.graphics.newImage("images/gun_right.png")
 	self.anim.gunRight = {}
 	self.anim.gunRight.center = {x=27, y=2}
 	
@@ -105,7 +108,7 @@ function Player:reset()
     self.health = 100
     self.drunk = 100
 	self:updateAnim("right", "jumping")
-    self.drunk = 0
+    --self.drunk = 0
     self.gunDirection = Vector(1, 0)
 	self.jumpCount = self.MAX_JUMPS
 end
@@ -251,6 +254,9 @@ function Player:update(dt)
     self.gunDirection.x = mousePos.x - posX
     self.gunDirection.y = mousePos.y - posY
     self.gunDirection:normalize_inplace()
+
+    -- Update the beer.
+    self.beer:update(dt)
 end
 
 function Player:draw()
@@ -361,10 +367,11 @@ function Player:draw()
     )
 	
     love.graphics.pop()
-	]]
+    --]]
 
     love.graphics.setColor(255, 255, 255, 255)
-	
+
+    self.beer:draw()
 end
 
 return Player

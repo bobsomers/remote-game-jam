@@ -125,6 +125,8 @@ end
 function PlayState:keypressed(key)
     if key == " " or key == "w" then
         self.player:jump()
+    elseif key == "e" then
+        self.player.drunk = self.player.drunk + Constants.PLAYER_DRINK_POINTS
     end
 end
 
@@ -153,12 +155,21 @@ function PlayState:mousepressed(x, y, button)
 
     -- Right click sprays beer.
     if button == "r" then
-        -- TODO
+        self.player.beer.spraying = true
+        self.player.beer.particles:start()
+    end
+end
+
+function PlayState:mousereleased(x, y, button)
+    -- Stop spraying beer.
+    if button == "r" then
+        self.player.beer.spraying = false
+        self.player.beer.particles:stop()
     end
 end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
-    local player, pubmate, bro, world
+    local player, pubmate, bro, world, beer
     local playerIndex, pubmateIndex, broIndex
     
     -- What is shape1?
@@ -176,6 +187,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             world = shape1
         elseif shape1.kind == "pub" then
             pub = shape1
+        elseif shape1.kind == "beer" then
+            beer = shape1
         else
             print("Unknown shape kind " .. shape1.kind .. "?")
         end
@@ -198,6 +211,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             world = shape2
         elseif shape2.kind == "pub" then
             pub = shape2
+        elseif shape2.kind == "beer" then
+            beer = shape2
         else
             print("Unknown shape kind " .. shape2.kind .. "?")
         end
@@ -252,8 +267,17 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     elseif pubmate and pub then
         pubmate:kill()
         print(self.score)
+    elseif beer and pubmate then
+        -- Watering the troops!
+        --if not beer.used then
+            pubmate.drunk = pubmate.drunk + Constants.BEER_BLOB_POINTS
+            if pubmate.drunk > 100 then
+                pubmate.drunk = 100
+            end
+            beer.used = true
+        --end
     else
-        print("No collision resolver for collision!")
+        --print("No collision resolver for collision!")
     end
 end
 
