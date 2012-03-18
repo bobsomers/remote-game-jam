@@ -153,7 +153,16 @@ function PlayState:mousepressed(x, y, button)
 
     -- Right click sprays beer.
     if button == "r" then
-        -- TODO
+        self.player.beer.spraying = true
+        self.player.beer.particles:start()
+    end
+end
+
+function PlayState:mousereleased(x, y, button)
+    -- Stop spraying beer.
+    if button == "r" then
+        self.player.beer.spraying = false
+        self.player.beer.particles:stop()
     end
 end
 

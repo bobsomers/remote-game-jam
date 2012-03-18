@@ -1,6 +1,7 @@
 local Class = require "hump.class"
 local Vector = require "hump.vector"
 local Constants = require "constants"
+local Beer = require "entities.beer"
 
 local Player = Class(function(self, collider, camera)
     self.collider = collider
@@ -12,6 +13,8 @@ local Player = Class(function(self, collider, camera)
     self.shape = self.collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "player"
     self.collider:addToGroup("player", self.shape)
+
+    self.beer = Beer(self, collider)
 
     self.MOVE_SPEED = Constants.PLAYER_SPEED
     self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
@@ -175,6 +178,9 @@ function Player:update(dt)
     self.gunDirection.x = mousePos.x - posX
     self.gunDirection.y = mousePos.y - posY
     self.gunDirection:normalize_inplace()
+
+    -- Update the beer.
+    self.beer:update(dt)
 end
 
 function Player:draw()
@@ -229,6 +235,8 @@ function Player:draw()
     love.graphics.pop()
 
     love.graphics.setColor(255, 255, 255, 255)
+
+    self.beer:draw()
 end
 
 return Player

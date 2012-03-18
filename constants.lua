@@ -35,4 +35,11 @@ Constants.BRO_PUNCH_DAMAGE_MIN = 10 -- 10 HP damage per punch.
 Constants.BRO_PUNCH_DAMAGE_MAX = 30 -- 30 HP damage per punch.
 Constants.BRO_PUNCH_COOLDOWN = 2 -- 2 seconds between punches.
 
+-- Beer constants.
+Constants.BEER_COOLDOWN = 0.15 -- 0.15 seconds per beer blob
+Constants.BEER_BLOB_POINTS = 20 -- Each beer blob replenishes 20 drunk points.
+Constants.BEER_BLOB_RADIUS = 15 -- Radius of individual beer blobs.
+Constants.BEER_BLOB_LIFETIME = 1 -- 1 seconds
+Constants.BEER_BLOB_SPEED = 400 -- Speed of new blobs.
+
 return Constants
