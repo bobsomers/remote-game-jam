@@ -37,7 +37,7 @@ function PlayState:init()
     self.pubmates = {}
     for i=1, 5 do
        self.pubmates[i] = PubMate(self.collider)
-       self.pubmates[i].shape:moveTo(250 + i*42, 0)
+       self.pubmates[i].shape:moveTo(250 + i*64, 0)
        self.entities:register(self.pubmates[i])
     end
     
@@ -45,7 +45,7 @@ function PlayState:init()
     self.bros = {}
     for i=1, 5 do
        self.bros[i] = Bro(self.collider)
-       self.bros[i].shape:moveTo(1000 + i*42, 0)
+       self.bros[i].shape:moveTo(1000 + i*64, 0)
        self.entities:register(self.bros[i])
     end
     
@@ -141,15 +141,19 @@ end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     local player, pubmate, bro, world
+    local playerIndex, pubmateIndex, broIndex
     
     -- What is shape1?
     if shape1.kind then
         if shape1.kind == "player" then
             player = self.entities:findByShape(shape1)
+            playerIndex = 1
         elseif shape1.kind == "pubmate" then
             pubmate = self.entities:findByShape(shape1)
+            pubmateIndex = 1
         elseif shape1.kind == "bro" then
             bro = self.entities:findByShape(shape1)
+            broIndex = 1
         elseif shape1.kind == "world" then
             world = shape1
         else
@@ -163,10 +167,13 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     if shape2.kind then
         if shape2.kind == "player" then
             player = self.entities:findByShape(shape2)
+            playerIndex = 2
         elseif shape2.kind == "pubmate" then
             pubmate = self.entities:findByShape(shape2)
+            pubmateIndex = 2
         elseif shape2.kind == "bro" then
             bro = self.entities:findByShape(shape2)
+            broIndex = 2
         elseif shape2.kind == "world" then
             world = shape2
         else
@@ -178,20 +185,44 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
 
     -- Dispatch the appropriate collision resolver.
     if player and world then
+        if playerIndex == 2 then
+            mtvX = -mtvX
+            mtvY = -mtvY
+        end
         player:collideWorld(world, Vector(mtvX, mtvY))
     elseif pubmate and world then
+        if pubmateIndex == 2 then
+            mtvX = -mtvX
+            mtvY = -mtvY
+        end
         pubmate:collideWorld(world, Vector(mtvX, mtvY))
         pubmate:jump()
     elseif bro and world then
+        if broIndex == 2 then
+            mtvX = -mtvX
+            mtvY = -mtvY
+        end
         bro:collideWorld(world, Vector(mtvX, mtvY))
         bro:jump()
     elseif player and pubmate then
-        print("I love you, man!")
+        -- Nothing to do.
     elseif player and bro then
         print("Douchebag!")
     elseif pubmate and bro then
-        pubmate:kill()
-        print("FFFUUUUUUUUU!!!")
+        -- Random chance as to who attacks who.
+        if math.random() < 0.5 then
+            if pubmateIndex == 2 then
+                mtvX = -mtvX
+                mtvY = -mtvY
+            end
+            pubmate:attackBro(bro, Vector(mtvX, mtvY))
+        else
+            if broIndex == 2 then
+                mtvX = -mtvX
+                mtvY = -mtvY
+            end
+            bro:attackPubmate(pubmate, Vector(mtvX, mtvY))
+        end
     else
         print("No collision resolver for collision!")
     end

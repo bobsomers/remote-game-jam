@@ -21,10 +21,13 @@ function PubMate:reset()
     self.velocity = Vector(0, 0)
     self.DRUNK_DRAIN_RATE = math.random(Constants.PUBMATE_DRUNK_DRAIN_RATE_MIN,
         Constants.PUBMATE_DRUNK_DRAIN_RATE_MAX)
+    self.PUNCH_DAMAGE = math.random(Constants.PUBMATE_PUNCH_DAMAGE_MIN,
+        Constants.PUBMATE_PUNCH_DAMAGE_MAX)
     self.health = 100
     self.drunk = 100
     self.alive = true
     self.collider:setSolid(self.shape)
+    self.punchCooldown = 0
 end
 
 function PubMate:kill()
@@ -56,12 +59,28 @@ function PubMate:collideWorld(tileShape, mtv)
     end
 end
 
+function PubMate:attackBro(bro, mtv)
+    -- Damage the bro.
+    if self.punchCooldown < 0 then
+        bro.health = bro.health - self.PUNCH_DAMAGE
+        self.punchCooldown = Constants.PUBMATE_PUNCH_COOLDOWN
+        print("PUBMATE PUNCH")
+    end
+
+    -- Resolve the collision by moving them double the MTV away from each other.
+    self.shape:move(10 * mtv.x, 10 * mtv.y)
+    bro.shape:move(-10 * mtv.x, -10 * mtv.y)
+end
+
 function PubMate:update(dt)
     if not self.alive then return end
     if self.health <= 0 then
         self:kill()
         return
     end
+
+    -- Reduce their punch cooldown.
+    self.punchCooldown = self.punchCooldown - dt
 
     -- Slowly drain the player's drunkeness over time.
     self.drunk = self.drunk - (self.DRUNK_DRAIN_RATE * dt)

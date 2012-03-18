@@ -18,10 +18,13 @@ local Bro = Class(function(self, collider)
 end)
 
 function Bro:reset()
+    self.PUNCH_DAMAGE = math.random(Constants.BRO_PUNCH_DAMAGE_MIN,
+        Constants.BRO_PUNCH_DAMAGE_MAX)
     self.velocity = Vector(0, 0)
     self.health = 100
     self.alive = true
     self.collider:setSolid(self.shape)
+    self.punchCooldown = 0
 end
 
 function Bro:kill()
@@ -53,12 +56,28 @@ function Bro:collideWorld(tileShape, mtv)
     end
 end
 
+function Bro:attackPubmate(pubmate, mtv)
+    -- Damage the pubmate.
+    if self.punchCooldown < 0 then
+        pubmate.health = pubmate.health - self.PUNCH_DAMAGE
+        self.punchCooldown = Constants.PUBMATE_PUNCH_COOLDOWN
+        print("BRO PUNCH")
+    end
+
+    -- Resolve the collision by moving them double the MTV away from each other.
+    self.shape:move(5 * mtv.x, 5 * mtv.y)
+    pubmate.shape:move(-5 * mtv.x, -5 * mtv.y)
+end
+
 function Bro:update(dt)
     if not self.alive then return end
     if self.health <= 0 then
         self:kill()
         return
     end
+
+    -- Reduce their punch cooldown.
+    self.punchCooldown = self.punchCooldown - dt
 
     -- Always be moving LEFT
     self.velocity.x = -self.MOVE_SPEED
