@@ -135,7 +135,7 @@ function PlayState:mousepressed(x, y, button)
     -- Left click does punch.
     if button == "l" then
         local x, y = self.player.shape:center()
-        if self.player.facing == "left" then
+        if self.player.anim.facing == "left" then
             x = x - (self.player.SIZE.x / 2) - Constants.PLAYER_REACH
         else
             x = x + (self.player.SIZE.x / 2) + Constants.PLAYER_REACH
