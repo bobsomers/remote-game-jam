@@ -67,6 +67,8 @@ function PlayState:reset()
 end
 
 function PlayState:update(dt)
+    dt = math.min(dt, 1/15) -- Minimum 15 FPS.
+
     -- Update all entities.
     self.entities:update(dt)
 
