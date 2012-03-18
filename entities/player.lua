@@ -112,6 +112,7 @@ end
 function Player:update(dt)
     -- Slowly drain the player's drunkeness over time.
     self.drunk = self.drunk - (Constants.PLAYER_DRUNK_DRAIN_RATE * dt)
+    self.camera.drunk = self.drunk / 100
     if self.drunk < 0 then
         self.drunk = 0
         -- TODO: you lose!
@@ -180,7 +181,7 @@ function Player:update(dt)
     self.shape:moveTo(posX, posY)
 
     -- Gun faces the mouse cursor.
-    local mousePos = self.camera:worldCoords(Vector(love.mouse.getPosition()))
+    local mousePos = self.camera.camera:worldCoords(Vector(love.mouse.getPosition()))
     self.gunDirection.x = mousePos.x - posX
     self.gunDirection.y = mousePos.y - posY
     self.gunDirection:normalize_inplace()

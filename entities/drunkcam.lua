@@ -14,6 +14,7 @@ end)
 function DrunkCam:reset()
     self.time = 0
     self.translateVelocity = Vector(0, 0)
+    self.drunk = 0
 end
 
 function DrunkCam:teleport(position)
@@ -27,6 +28,12 @@ end
 
 function DrunkCam:update(dt)
     self.time = self.time + dt
+
+    -- Update the zoom.
+    self.camera.zoom = (self.drunk * 0.1) * math.sin(2 * math.pi * (self.drunk * 0.5 + 0.5) * self.time) + 1
+
+    -- Update rotation.
+    self.camera.rot = (self.drunk * math.pi / 13) * math.sin(2 * math.pi * (self.drunk * 0.4 + 0.1) * self.time)
 
     local a = (self.target - self.camera.pos) * self.SPRING_K
 

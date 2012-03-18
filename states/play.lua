@@ -38,7 +38,7 @@ function PlayState:init()
     self.entities:register(self.cam)
 
     -- Load the player.
-    self.player = Player(self.collider, self.cam.camera)
+    self.player = Player(self.collider, self.cam)
     self.player.shape:moveTo(250, 0)
     self.entities:register(self.player)
 
