@@ -18,6 +18,11 @@ end)
 function Bro:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
+    self.alive = true
+end
+
+function Bro:kill()
+    self.alive = false
 end
 
 function Bro:jump()
@@ -45,6 +50,12 @@ function Bro:collideWorld(tileShape, mtv)
 end
 
 function Bro:update(dt)
+    if not self.alive then return end
+    if self.health <= 0 then
+        self:kill()
+        return
+    end
+
     -- Always be moving LEFT
     self.velocity.x = -self.MOVE_SPEED
 
@@ -60,6 +71,8 @@ function Bro:update(dt)
 end
 
 function Bro:draw()
+    if not self.alive then return end
+
     local posX, posY = self.shape:center()
     local position = Vector(posX, posY)
 

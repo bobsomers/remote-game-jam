@@ -20,6 +20,8 @@ Constants.GRAVITY = 750 -- 750 pixels/sec^2, where 32 pixels ~ 1 meter
 Constants.PLAYER_SPEED = 175 -- 175 pixels/sec
 Constants.PLAYER_JUMP = 400 -- instantaneous Y velocity of 400 pixels/sec
 Constants.PLAYER_DRUNK_DRAIN_RATE = 3 -- Lose 3 drunk points/sec.
+Constants.PLAYER_REACH = 20 -- Punches 20 pixels away.
+Constants.PLAYER_PUNCH_DAMAGE = 20 -- 20 HP damage per punch.
 
 -- Pubmate constants.
 Constants.PUBMATE_DRUNK_DRAIN_RATE_MIN = 2 -- Lose 2 drunk points/sec.

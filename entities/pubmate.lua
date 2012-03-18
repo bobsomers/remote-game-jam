@@ -21,10 +21,11 @@ function PubMate:reset()
         Constants.PUBMATE_DRUNK_DRAIN_RATE_MAX)
     self.health = 100
     self.drunk = 100
+    self.alive = true
 end
 
 function PubMate:kill()
-    self.shape:moveTo(10000,10000)
+    self.alive = false
 end
 
 function PubMate:jump()
@@ -52,6 +53,12 @@ function PubMate:collideWorld(tileShape, mtv)
 end
 
 function PubMate:update(dt)
+    if not self.alive then return end
+    if self.health <= 0 then
+        self:kill()
+        return
+    end
+
     -- Slowly drain the player's drunkeness over time.
     self.drunk = self.drunk - (self.DRUNK_DRAIN_RATE * dt)
     if self.drunk < 0 then
@@ -74,6 +81,8 @@ function PubMate:update(dt)
 end
 
 function PubMate:draw()
+    if not self.alive then return end
+
     local posX, posY = self.shape:center()
     local position = Vector(posX, posY)
 

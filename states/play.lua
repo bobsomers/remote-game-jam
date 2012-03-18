@@ -110,6 +110,35 @@ function PlayState:keypressed(key)
     end
 end
 
+function PlayState:mousepressed(x, y, button)
+    -- Left click does punch.
+    if button == "l" then
+        local x, y = self.player.shape:center()
+        if self.player.facing == "left" then
+            x = x - (self.player.SIZE.x / 2) - Constants.PLAYER_REACH
+        else
+            x = x + (self.player.SIZE.x / 2) + Constants.PLAYER_REACH
+        end
+        y = y - (self.player.SIZE.y / 4) -- 75% up the player's height
+        for _, shape in ipairs(self.collider:shapesAt(x, y)) do
+            if shape.kind then
+                if shape.kind == "pubmate" then
+                    local pubmate = self.entities:findByShape(shape)
+                    pubmate.health = pubmate.health - Constants.PLAYER_PUNCH_DAMAGE
+                elseif shape.kind == "bro" then
+                    local bro = self.entities:findByShape(shape)
+                    bro.health = bro.health - Constants.PLAYER_PUNCH_DAMAGE
+                end
+            end
+        end
+    end
+
+    -- Right click sprays beer.
+    if button == "r" then
+        -- TODO
+    end
+end
+
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     local player, pubmate, bro, world
     

@@ -12,6 +12,8 @@ local Player = Class(function(self, collider)
     self.MOVE_SPEED = Constants.PLAYER_SPEED
     self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
 
+    self.facing = "left"
+
     self:reset()
 end)
 
@@ -57,9 +59,11 @@ function Player:update(dt)
     self.velocity.x = 0
     if love.keyboard.isDown("a") then
         self.velocity.x = -self.MOVE_SPEED
+        self.facing = "left"
     end
     if love.keyboard.isDown("d") then
         self.velocity.x = self.MOVE_SPEED
+        self.facing = "right"
     end
 
     -- Compute player's position based on velocity and gravity.
