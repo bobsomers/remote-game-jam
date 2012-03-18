@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="test_tileset" tilewidth="32" tileheight="32">
-  <image source="map_test.png" width="256" height="256"/>
+ <tileset firstgid="1" name="colored_tileset" tilewidth="32" tileheight="32">
+  <image source="map_test_2.png" width="256" height="256"/>
   <tile id="0">
    <properties>
     <property name="solid" value="true"/>
@@ -28,16 +28,6 @@
    </properties>
   </tile>
   <tile id="5">
-   <properties>
-    <property name="solid" value="true"/>
-   </properties>
-  </tile>
-  <tile id="6">
-   <properties>
-    <property name="solid" value="true"/>
-   </properties>
-  </tile>
-  <tile id="7">
    <properties>
     <property name="solid" value="true"/>
    </properties>
@@ -72,19 +62,24 @@
     <property name="solid" value="true"/>
    </properties>
   </tile>
-  <tile id="15">
+  <tile id="16">
+   <properties>
+    <property name="solid" value="true"/>
+   </properties>
+  </tile>
+  <tile id="17">
    <properties>
     <property name="solid" value="true"/>
    </properties>
   </tile>
   <tile id="18">
    <properties>
-    <property name="rampUp" value="true"/>
+    <property name="solid" value="true"/>
    </properties>
   </tile>
   <tile id="19">
    <properties>
-    <property name="rampDown" value="true"/>
+    <property name="solid" value="true"/>
    </properties>
   </tile>
   <tile id="20">
@@ -94,7 +89,7 @@
   </tile>
   <tile id="21">
    <properties>
-    <property name="rampDown" value="true"/>
+    <property name="rampDown" value=""/>
    </properties>
   </tile>
   <tile id="22">
@@ -107,10 +102,60 @@
     <property name="rampDown" value="true"/>
    </properties>
   </tile>
+  <tile id="24">
+   <properties>
+    <property name="solid" value="true"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="solid" value="true"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="solid" value="true"/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="solid" value="true"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="rampUp" value="true"/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="rampDown" value="true"/>
+   </properties>
+  </tile>
+  <tile id="38">
+   <properties>
+    <property name="rampUp" value="true"/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="rampDown" value="true"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="rampDown" value="true"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="rampUp" value="true"/>
+   </properties>
+  </tile>
  </tileset>
- <layer name="world" width="100" height="100">
+ <layer name="Tile Layer 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2GtP2zAABVAztsHeDxh7sAH7tM/8/z+HrWLhWUmaNqGt03OkKyRw0uLb1E5CAABg6V7v+w3wn/N9v4FGnMS8mHFcn9zHq5jPVT5OOO/SnMa8n3FcnzHXx9mE8y9F3zx/i7kaMW6sDxuMPeZeuuY5dfE75jo8dTK1j20cYy9pnn/GvAxP68OfmMuYi5ibgXHJWc/PrnVi27XimHp5E/PuMW+L36dObkaM26Vj6uWQ6WHY/Y5eRw+78z2s1qKuTLnPWbJ/z3TedG/5K+ZTT3a9j2tN/Vn+seV5Th6P7+viS9jvfqEFqYs8f2m+vobVvnddJ+V+N+9xyz1aV/p6GPpua/17bpPnULmL3EP6HrkNw53MvQaXn4d1yfdHLfUz9j677OKuOm5dJ8kcvWzSRav9lPfZdfKzkbqLfFzZ45hOktzL37C6Nq8GxpamdtHKPiHNa9/7Tc+ryvX2rjqu/n/GdpLkPVX5TCzrWh/m7qLFPurU89N1XeV567vmuub3euBvz5nW+1haDrEPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADh0D1eRFt8=
+   eJzt19tO2zAABmAPBqs4TDBg43gBEhu7Grz/DY+GrcTCBCe0YW0p/T7pl6o0R/+JlYQAAAAAAADAWCcxXyvZWOZJranUxWXMYcxum+OYScxZ0M0ilV3sFMuvwnMnOWO7+RVzEPO93XY7hMfTEed6O/L4H015Hd2kLtJY71W2S53s9mSnsn7Nn9B0sRU7OA8ve/05cK6/K8vy9n3nuwrStUymyDyuL3WRn4k8lg/FMS/C6/uj21m3h5xVlLqoXUst5fX33btDvoT68zft8WfNqpmli1rSvZvn6L6xXsS4f4Y+hrq4jvkWc9PzfzmnbLX72x5Yd1lZFd0u8vjX0tfJUWi6uG/3+S80nfzoWX+d+nhrnuibN4Z6qHVy3f7udpGlTjbD8ntYdh9jz/dvaMY7v2/ehen6KVNK+xnbx2fynnuo+z55OcN2+6HpMMmdztrHuprHfJDef9N3dOohf1tP+w7F/+uh/F4rv0lq/+th2DyeE8/DYukBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICP6gkIMxro
   </data>
  </layer>
 </map>
