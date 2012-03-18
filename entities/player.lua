@@ -1,6 +1,7 @@
 local Class = require "hump.class"
 local Vector = require "hump.vector"
 local Constants = require "constants"
+local gfx = love.graphics
 
 local Player = Class(function(self, collider, camera)
     self.collider = collider
@@ -83,6 +84,14 @@ local Player = Class(function(self, collider, camera)
 	self.anim.faceNeutralRightImg = love.graphics.newImage("images/gen_head_right.png")
 	self.anim.faceNeutralRight = newAnimation(self.anim.faceNeutralRightImg, 48, 48, 1, 1)
 	self.anim.faceNeutralRight.center = {x=24, y=8}
+	
+	self.anim.gunLeftImg = love.graphics.newImage("images/gun_left.png")
+	self.anim.gunLeft = {}
+	self.anim.gunLeft.center = {x=27, y=2}
+	
+	self.anim.gunRightImg = love.graphics.newImage("images/gun_left.png")
+	self.anim.gunRight = {}
+	self.anim.gunRight.center = {x=27, y=2}
 	
 	-- Set default animation states
 	self.anim.current = "idle"
@@ -191,11 +200,11 @@ function Player:update(dt)
     -- Check for keyboard input.
     self.velocity.x = 0
     if love.keyboard.isDown("a") then
-        self.velocity.x = -self.MOVE_SPEED
+        self.velocity.x = self.velocity.x - self.MOVE_SPEED
 		self:updateAnim("left")
     end
     if love.keyboard.isDown("d") then
-        self.velocity.x = self.MOVE_SPEED
+        self.velocity.x = self.velocity.x + self.MOVE_SPEED
 		self:updateAnim("right")
 
     end
@@ -318,6 +327,14 @@ function Player:draw()
 		self.anim.faceNeutralRight:draw(finalOffsetX,finalOffsetY)
 	end
 	
+	-- Draw the arm + gun
+	
+	if self.anim.facing == "left" then
+		gfx.draw( self.anim.gunLeftImg, offsetX, offsetY, 0, 1, 1, self.anim.gunLeft.center.x, self.anim.gunLeft.center.y )
+	else
+		gfx.draw( self.anim.gunRightImg, offsetX, offsetY, 0, 1, 1, self.anim.gunRight.center.x, self.anim.gunRight.center.y )
+	end
+	
     -- Draw their sobriety meter.
     love.graphics.setColor(255, 200, 0, 255)
     love.graphics.rectangle("fill",
@@ -332,6 +349,7 @@ function Player:draw()
         self.health / 100 * self.SIZE.x, 4
     )
 	
+	--[[
     -- Draw their gun.
     love.graphics.setColor(255, 255, 0, 255)
     love.graphics.push()
@@ -341,7 +359,9 @@ function Player:draw()
         -self.GUN_SIZE.y / 2, -self.GUN_SIZE.y / 2,
         self.GUN_SIZE.x, self.GUN_SIZE.y
     )
+	
     love.graphics.pop()
+	]]
 
     love.graphics.setColor(255, 255, 255, 255)
 	
