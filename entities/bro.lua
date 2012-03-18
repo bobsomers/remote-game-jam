@@ -17,6 +17,7 @@ end)
 
 function Bro:reset()
     self.velocity = Vector(0, 0)
+    self.health = 100
 end
 
 function Bro:jump()
@@ -59,8 +60,19 @@ function Bro:update(dt)
 end
 
 function Bro:draw()
+    local posX, posY = self.shape:center()
+    local position = Vector(posX, posY)
+
     love.graphics.setColor(0, 0, 255, 255)
     self.shape:draw("fill") -- for debugging
+
+    -- Draw their health meter.
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.rectangle("fill",
+        position.x - (self.SIZE.x / 2), position.y - (self.SIZE.y / 2) - 6,
+        self.health / 100 * self.SIZE.x, 4
+    )
+
     love.graphics.setColor(255, 255, 255, 255)
 end
 
