@@ -12,14 +12,13 @@ local Beer = Class(function(self, player, collider)
     self.particles = love.graphics.newParticleSystem(
         love.graphics.newImage("images/particle.png"), 250)
     self.particles:setEmissionRate(250)
-    self.particles:setSize(1, 2, 1)
-    self.particles:setSpeed(500, 700)
-    self.particles:setColor(220, 105, 20, 255, 194, 30, 18, 0)
+    self.particles:setSize(0.5, 0.25, 0.5)
+    self.particles:setSpeed(Constants.BEER_BLOB_SPEED, Constants.BEER_BLOB_SPEED + 100)
+    self.particles:setColor(194, 145, 10, 255, 255, 255, 255, 128)
     self.particles:setLifetime(-1)
-    self.particles:setParticleLife(0.4)
-    self.particles:setSpread(math.pi / 10)
-    self.particles:setTangentialAcceleration(1000)
-    self.particles:setRadialAcceleration(-2000)
+    self.particles:setParticleLife(Constants.BEER_BLOB_LIFETIME)
+    self.particles:setSpread(math.pi / 16)
+    self.particles:setGravity(Constants.GRAVITY)
 
     self:reset()
 end)
@@ -32,6 +31,12 @@ end
 
 function Beer:update(dt)
     self.cooldown = self.cooldown - dt
+
+    local emitterPosition = Vector(self.player.shape:center()) +
+            (self.player.gunDirection * (self.player.GUN_SIZE.x - 10))
+    local emitterAngle = math.atan2(self.player.gunDirection.y, self.player.gunDirection.x)
+    self.particles:setPosition(emitterPosition.x, emitterPosition.y)
+    self.particles:setDirection(emitterAngle)
 
     if self.spraying then
         if self.cooldown < 0 then
@@ -81,21 +86,16 @@ function Beer:update(dt)
 end
 
 function Beer:draw()
-    -- TODO: debugging
+    --[[
     love.graphics.setColor(255, 0, 255, 255)
     for _, blob in ipairs(self.blobs) do
         local x, y = blob:center()
         love.graphics.circle("fill", x, y, Constants.BEER_BLOB_RADIUS)
     end
     love.graphics.setColor(255, 255, 255, 255)
+    --]]
 
-    local colorMode = love.graphics.getColorMode()
-    local blendMode = love.graphics.getBlendMode()
-    love.graphics.setColorMode("modulate")
-    love.graphics.setBlendMode("additive")
     love.graphics.draw(self.particles, 0, 0)
-    love.graphics.setColorMode(colorMode)
-    love.graphics.setBlendMode(blendMode)
 end
 
 return Beer
