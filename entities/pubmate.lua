@@ -3,11 +3,13 @@ local Vector = require "hump.vector"
 local Constants = require "constants"
 
 local PubMate = Class(function(self, collider)
+    self.collider = collider
+
     self.SIZE = Vector(32, 64)
 
-    self.shape = collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
+    self.shape = self.collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "pubmate"
-    collider:addToGroup("pubmate", self.shape)
+    self.collider:addToGroup("pubmate", self.shape)
 
     self.MOVE_SPEED = (Constants.PLAYER_SPEED / 4)
     self.JUMP_VELOCITY = (-Constants.PLAYER_JUMP / 4)
@@ -22,10 +24,12 @@ function PubMate:reset()
     self.health = 100
     self.drunk = 100
     self.alive = true
+    self.collider:setSolid(self.shape)
 end
 
 function PubMate:kill()
     self.alive = false
+    self.collider:setGhost(self.shape)
 end
 
 function PubMate:jump()

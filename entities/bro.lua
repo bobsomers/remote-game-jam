@@ -3,11 +3,13 @@ local Vector = require "hump.vector"
 local Constants = require "constants"
 
 local Bro = Class(function(self, collider)
+    self.collider = collider
+
     self.SIZE = Vector(32, 64)
 
-    self.shape = collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
+    self.shape = self.collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "bro"
-    collider:addToGroup("bro", self.shape)
+    self.collider:addToGroup("bro", self.shape)
 
     self.MOVE_SPEED = (Constants.PLAYER_SPEED / 8)
     self.JUMP_VELOCITY = (-Constants.PLAYER_JUMP / 8)
@@ -19,10 +21,12 @@ function Bro:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
     self.alive = true
+    self.collider:setSolid(self.shape)
 end
 
 function Bro:kill()
     self.alive = false
+    self.collider:setGhost(self.shape)
 end
 
 function Bro:jump()
