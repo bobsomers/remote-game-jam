@@ -65,6 +65,7 @@ function PlayState:init()
     self.crosshair = Crosshair()
 
     self.score=0
+    
 end
 
 function PlayState:enter(previous)
@@ -263,10 +264,7 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
                 mtvY = -mtvY
             end
             bro:attackPubmate(pubmate, Vector(mtvX, mtvY))
-        end
-    elseif pubmate and pub then
-        pubmate:kill()
-        print(self.score)
+        end    
     elseif beer and pubmate then
         -- Watering the troops!
         --if not beer.used then
@@ -276,6 +274,9 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             end
             beer.used = true
         --end
+    elseif pubmate and pub then
+        pubmate:kill()
+        self.score = self.score + 1
     else
         --print("No collision resolver for collision!")
     end
