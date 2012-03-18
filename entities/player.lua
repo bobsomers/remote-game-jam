@@ -10,6 +10,9 @@ local Player = Class(function(self, collider, camera)
 
     self.SIZE = Vector(32, 64)
     self.GUN_SIZE = Vector(32, 16)
+	
+	-- add 32 to the center of the player
+	self.PLAYER_FLOOR = Vector(0, 32)
 
     self.shape = self.collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "player"
@@ -21,80 +24,97 @@ local Player = Class(function(self, collider, camera)
     self.MOVE_SPEED = Constants.PLAYER_SPEED
     self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
 	
+	----------------------------------------------------------------------------
 	-- Animation shenanegans 
+	----------------------------------------------------------------------------
 	self.anim = {}
-	
+	self.anim["left"] = {}
+	self.anim["right"] = {}
 	-- Animation for idle standing position when facing left
-	self.anim.idleLeftImg = love.graphics.newImage("images/hero_stand_left.png")
-	self.anim.idleLeft = newAnimation(self.anim.idleLeftImg, 32, 32, 0.3, 2)
-	self.anim.idleLeft.faceCenter = {
-		{x=18, y=29}, 
-		{x=18, y=30}
+	self.anim["left"]["idle"] = {}
+	idleLeftImg = love.graphics.newImage("images/hero_stand_left.png")
+	self.anim["left"]["idle"] = newAnimation(idleLeftImg, 32, 32, 0.3, 2)
+	self.anim["left"]["idle"].faceCenter = {
+		Vector(18, 29), 
+		Vector(18, 30)
 	}
 	
 	-- Animation for idle standing position when facing right
-	self.anim.idleRightImg = love.graphics.newImage("images/hero_stand_right.png")
-	self.anim.idleRight = newAnimation(self.anim.idleRightImg, 32, 32, 0.3, 2)
-	self.anim.idleRight.faceCenter = {
-		{x=14, y=29}, 
-		{x=14, y=30}
+	self.anim["right"]["idle"] = {}
+	idleRightImg = love.graphics.newImage("images/hero_stand_right.png")
+	self.anim["right"]["idle"] = newAnimation(idleRightImg, 32, 32, 0.3, 2)
+	self.anim["right"]["idle"].faceCenter = {
+		Vector(14, 29), 
+		Vector(14, 30)
 	}
 	
 	-- Animation for walking position when facing left
-	self.anim.walkLeftImg = love.graphics.newImage("images/hero_walk_left.png")
-	self.anim.walkLeft = newAnimation(self.anim.walkLeftImg, 32, 32, 0.2, 4)
-	self.anim.walkLeft.faceCenter = {
-		{x=16, y=32}, 
-		{x=17, y=32},
-		{x=16, y=32}, 
-		{x=17, y=31}
+	self.anim["left"]["walk"] = {}
+	walkLeftImg = love.graphics.newImage("images/hero_walk_left.png")
+	self.anim["left"]["walk"] = newAnimation(walkLeftImg, 32, 32, 0.2, 4)
+	self.anim["left"]["walk"].faceCenter = {
+		Vector(16, 32), 
+		Vector(17, 32),
+		Vector(16, 32), 
+		Vector(17, 31)
 	}
 	
 	-- Animation for walking position when facing right
-	self.anim.walkRightImg = love.graphics.newImage("images/gen_walk_right.png")
-	self.anim.walkRight = newAnimation(self.anim.walkRightImg, 32, 32, 0.2, 4)
-	self.anim.walkRight.faceCenter = {
-		{x=16, y=32}, 
-		{x=15, y=32},
-		{x=16, y=32}, 
-		{x=15, y=31}
+	self.anim["right"]["walk"] = {}
+	walkRightImg = love.graphics.newImage("images/gen_walk_right.png")
+	self.anim["right"]["walk"] = newAnimation(walkRightImg, 32, 32, 0.2, 4)
+	self.anim["right"]["walk"].faceCenter = {
+		Vector(16, 32), 
+		Vector(15, 32),
+		Vector(16, 32), 
+		Vector(15, 31)
 	}
 	
 	-- Animation for jumping when facing left
-	self.anim.jumpLeftImg = love.graphics.newImage("images/gen_jump_left.png")
-	self.anim.jumpLeft = newAnimation(self.anim.jumpLeftImg, 64, 64, 0.1, 2)
-	self.anim.jumpLeft:setMode("once")
+	self.anim["left"]["jump"] = {}
+	jumpLeftImg = love.graphics.newImage("images/gen_jump_left.png")
+	self.anim["left"]["jump"] = newAnimation(jumpLeftImg, 64, 64, 0.1, 2)
+	self.anim["left"]["jump"]:setMode("once")
 	-- Don't question the magic.
-	self.anim.jumpLeft.faceCenter = {
-		{x=34, y=64-75},
-		{x=34, y=64-45}
+	self.anim["left"]["jump"].faceCenter = {
+		Vector(34, 64-75),
+		Vector(34, 64-45)
 	}
 	
 	-- Animation for jumping when facing right
-	self.anim.jumpRightImg = love.graphics.newImage("images/gen_jump_right.png")
-	self.anim.jumpRight = newAnimation(self.anim.jumpRightImg, 64, 64, 0.1, 2)
-	self.anim.jumpRight:setMode("once")
+	self.anim["right"]["jump"] = {}
+	jumpRightImg = love.graphics.newImage("images/gen_jump_right.png")
+	self.anim["right"]["jump"] = newAnimation(jumpRightImg, 64, 64, 0.1, 2)
+	self.anim["right"]["jump"]:setMode("once")
 	-- Don't question the magic.
-	self.anim.jumpRight.faceCenter = {
-		{x=34, y=64-75}, 
-		{x=34, y=64-45}
+	self.anim["right"]["jump"].faceCenter = {
+		Vector(34, 64-75), 
+		Vector(34, 64-45)
 	}
 	
-	self.anim.faceNeutralLeftImg = love.graphics.newImage("images/gen_head_left.png")
-	self.anim.faceNeutralLeft = newAnimation(self.anim.faceNeutralLeftImg, 48, 48, 1, 1)
-	self.anim.faceNeutralLeft.center = {x=24, y=8}
+	-- Animation for head (because I don't want to figure out how to draw with graphics
+	-- cause it's different than animations :| )
+	self.anim["left"]["head"] = {}
+	faceNeutralLeftImg = love.graphics.newImage("images/gen_head_left.png")
+	self.anim["left"]["head"] = newAnimation(faceNeutralLeftImg, 48, 48, 1, 1)
+	self.anim["left"]["head"].center = Vector(24, 8)
 	
-	self.anim.faceNeutralRightImg = love.graphics.newImage("images/gen_head_right.png")
-	self.anim.faceNeutralRight = newAnimation(self.anim.faceNeutralRightImg, 48, 48, 1, 1)
-	self.anim.faceNeutralRight.center = {x=24, y=8}
+	self.anim["right"]["head"] = {}
+	faceNeutralRightImg = love.graphics.newImage("images/gen_head_right.png")
+	self.anim["right"]["head"] = newAnimation(faceNeutralRightImg, 48, 48, 1, 1)
+	self.anim["right"]["head"].center = Vector(24, 8)
 	
-	self.anim.gunLeftImg = love.graphics.newImage("images/gun_left.png")
-	self.anim.gunLeft = {}
-	self.anim.gunLeft.center = {x=27, y=2}
+	-- left gun
+	self.anim["left"]["gun"] = {}
+	gunLeftImg = love.graphics.newImage("images/gun_left.png")
+	self.anim["left"]["gun"] = newAnimation(gunLeftImg, 48, 48, 1, 1)
+	self.anim["left"]["gun"].center = Vector(27, 2)
 	
-	self.anim.gunRightImg = love.graphics.newImage("images/gun_right.png")
-	self.anim.gunRight = {}
-	self.anim.gunRight.center = {x=27, y=2}
+	-- right gun
+	self.anim["right"]["gun"] = {}
+	gunRightImg = love.graphics.newImage("images/gun_right.png")
+	self.anim["right"]["gun"] = newAnimation(gunRightImg, 48, 48, 1, 1)
+	self.anim["right"]["gun"].center = Vector(27, 2)
 	
 	-- Set default animation states
 	self.anim.current = "idle"
@@ -106,8 +126,8 @@ end)
 function Player:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
-    self.drunk = 100
-	self:updateAnim("right", "jumping")
+    self.drunk = 00
+	self:changeAnim("right", "jump")
     --self.drunk = 0
     self.gunDirection = Vector(1, 0)
 	self.jumpCount = self.MAX_JUMPS
@@ -119,7 +139,7 @@ function Player:jump()
 	end
     
 	-- set animation state
-	self:updateAnim(self.anim.facing, "jumping")
+	self:changeAnim(self.anim.facing, "jump")
 	self.jumpCount = self.jumpCount - 1
     
     -- Apply some instantaneous velocity in the Y direction.
@@ -142,20 +162,23 @@ function Player:collideWorld(tileShape, mtv)
 		
 		self.jumping = true
 		-- reset animation state
-		if self.anim.current == "jumping" then
-			self:updateAnim(self.anim.facing, "idle")
+		if self.anim.current == "jump" then
+			self:changeAnim(self.anim.facing, "idle")
 		end
     end
 end
 
-function Player:updateAnim(facing, state)
+function Player:changeAnim(facing, state)
+	local curState = self.anim.current
+	local curFacing = self.anim.facing
+	
 	if state == nil then
-		state = self.anim.current
+		state = curState
 	end	
 	
 	-- Include a special case for while in the air, we want to be able to move around
 	-- in the air freely without resetting our animation
-	if self.anim.current ~= state or (self.anim.facing ~= facing and self.anim.current ~= "jumping") then
+	if (curState ~= state) or (curFacing ~= facing and curState ~= "jump") then
 		self.anim.facing = facing
 		self.anim.current = state
 		self:resetAnim()
@@ -165,30 +188,14 @@ function Player:updateAnim(facing, state)
 	end
 end
 
+function Player:updateAnim(dt)
+	self.anim[self.anim.facing][self.anim.current]:update(dt)
+end
+
 function Player:resetAnim()
-	if self.anim.facing == "left" then
-		if self.anim.current == "walking" then
-			self.anim.walkLeft:reset()
-			self.anim.walkLeft:play()
-		elseif self.anim.current == "idle" then
-			self.anim.idleLeft:reset()
-			self.anim.idleLeft:play()
-		elseif self.anim.current == "jumping" then
-			self.anim.jumpLeft:reset()
-			self.anim.jumpLeft:play()
-		end
-	else
-		if self.anim.current == "walking" then
-			self.anim.walkRight:reset()
-			self.anim.walkRight:play()
-		elseif self.anim.current == "idle" then
-			self.anim.idleRight:reset()
-			self.anim.idleRight:play()
-		elseif self.anim.current == "jumping" then
-			self.anim.jumpRight:reset()
-			self.anim.jumpRight:play()
-		end
-	end
+	print("resetting " .. self.anim.facing .. "/" .. self.anim.current)
+	self.anim[self.anim.facing][self.anim.current]:reset()
+	self.anim[self.anim.facing][self.anim.current]:play()
 end 
 
 function Player:update(dt)
@@ -204,11 +211,11 @@ function Player:update(dt)
     self.velocity.x = 0
     if love.keyboard.isDown("a") then
         self.velocity.x = self.velocity.x - self.MOVE_SPEED
-		self:updateAnim("left")
+		self:changeAnim("left")
     end
     if love.keyboard.isDown("d") then
         self.velocity.x = self.velocity.x + self.MOVE_SPEED
-		self:updateAnim("right")
+		self:changeAnim("right")
 
     end
 
@@ -221,31 +228,16 @@ function Player:update(dt)
     self.velocity.y = self.velocity.y + (Constants.GRAVITY * dt)
 
 	-- Only update if we aren't falling
-	if self.anim.current ~= "jumping" then
+	if self.anim.current ~= "jump" then
 		if self.velocity.x < -10 or self.velocity.x > 10 then
-			self:updateAnim(self.anim.facing, "walking")
+			self:changeAnim(self.anim.facing, "walk")
 		else
-			self:updateAnim(self.anim.facing, "idle")
+			self:changeAnim(self.anim.facing, "idle")
 		end
 	end
 	
-	if self.anim.facing == "left" then
-		if self.anim.current == "walking" then
-			self.anim.walkLeft:update(dt)
-		elseif self.anim.current == "idle" then
-			self.anim.idleLeft:update(dt)
-		elseif self.anim.current == "jumping" then
-			self.anim.jumpLeft:update(dt)
-		end
-	else
-		if self.anim.current == "walking" then
-			self.anim.walkRight:update(dt)
-		elseif self.anim.current == "idle" then
-			self.anim.idleRight:update(dt)
-		elseif self.anim.current == "jumping" then
-			self.anim.jumpRight:update(dt)
-		end
-	end
+	-- Update the current animation
+	self:updateAnim(dt)
 	
     self.shape:moveTo(posX, posY)
 
@@ -264,83 +256,42 @@ function Player:draw()
 	
 	-- Retrieve our location
     local posX, posY = self.shape:center()
-	local headOffset = {}
-	local offsetX = 0
-	local offsetY = 0
-	if self.anim.facing == "left" then
-		if self.anim.current == "walking" then
-			offsetX = posX - (self.anim.walkLeft.fw / 2)
-			offsetY = posY - (self.anim.walkLeft.fh / 2) + 16
-			self.anim.walkLeft:draw(offsetX, offsetY)
+	local offset = Vector(posX + self.PLAYER_FLOOR.x, posY + self.PLAYER_FLOOR.y)
+	
+	-- Get the current body animation table
+	local currAnim = self.anim[self.anim.facing][self.anim.current]
+	
+	-- we want the bottom of the image at our 'center' so subtract all of fh
+	offset.x = offset.x - (currAnim.fw / 2)
+	offset.y = offset.y - (currAnim.fh)
+	
+	-- Get current head position
+	local headOffset = currAnim.faceCenter[currAnim:getCurrentFrame()]
+	
+	-- Draw the body
+	currAnim:draw(offset.x, offset.y)
+	
+	-- Get the current head animation
+	local currHeadAnim = self.anim[self.anim.facing]["head"]
+	
+	-- Get the offset of the head
+	local finaloffset = Vector(
+				offset.x + headOffset.x - currHeadAnim.center.x,
+				offset.y - headOffset.y - currHeadAnim.center.y
+				)
+				
+	-- Draw the head
+	currHeadAnim:draw(finaloffset.x,finaloffset.y)
 
-			-- Get current head position
-			headOffset = self.anim.walkLeft.faceCenter[self.anim.walkLeft:getCurrentFrame()]
-			
-		elseif self.anim.current == "idle" then
-			offsetX = posX - (self.anim.idleLeft.fw / 2)
-			offsetY = posY - (self.anim.idleLeft.fh / 2) + 16
-			self.anim.idleLeft:draw(offsetX, offsetY)
-			
-			-- Get current head position
-			headOffset = self.anim.idleLeft.faceCenter[self.anim.idleLeft:getCurrentFrame()]
-			
-		elseif self.anim.current == "jumping" then
-			offsetX = posX - (self.anim.jumpLeft.fw / 2)
-			offsetY = posY - (self.anim.jumpLeft.fh / 2) + 16
-			self.anim.jumpLeft:draw(offsetX, offsetY)
-			
-			-- Get current head position
-			headOffset = self.anim.jumpLeft.faceCenter[self.anim.jumpLeft:getCurrentFrame()]
-			
-		end
-	else
-		if self.anim.current == "walking" then
-			offsetX = posX - (self.anim.walkRight.fw / 2)
-			offsetY = posY - (self.anim.walkRight.fh / 2) + 16
-			self.anim.walkRight:draw(offsetX, offsetY)
-			
-			-- Get current head position
-			headOffset = self.anim.walkRight.faceCenter[self.anim.walkRight:getCurrentFrame()]
-			
-		elseif self.anim.current == "idle" then
-			offsetX = posX - (self.anim.idleRight.fw / 2)
-			offsetY = posY - (self.anim.idleRight.fh / 2) + 16
-			self.anim.idleRight:draw(offsetX, offsetY)
-			
-			-- Get current head position
-			headOffset = self.anim.idleRight.faceCenter[self.anim.idleRight:getCurrentFrame()]
-			
-		elseif self.anim.current == "jumping" then
-			offsetX = posX - (self.anim.jumpRight.fw / 2)
-			offsetY = posY - (self.anim.jumpRight.fh / 2) + 16
-			self.anim.jumpRight:draw(offsetX, offsetY)
-			
-			-- Get current head position
-			headOffset = self.anim.jumpRight.faceCenter[self.anim.jumpRight:getCurrentFrame()]
-			
-		end
-	end
-	
-	-- Draw their head
-	
-	if self.anim.facing == "left" then
-		local finalOffsetX = offsetX + headOffset.x - self.anim.faceNeutralLeft.center.x
-		local finalOffsetY = offsetY - headOffset.y - self.anim.faceNeutralLeft.center.y
-		self.anim.faceNeutralLeft:draw(finalOffsetX,finalOffsetY)
-	else
-		local finalOffsetX = offsetX + headOffset.x - self.anim.faceNeutralRight.center.x
-		local finalOffsetY = offsetY - headOffset.y - self.anim.faceNeutralRight.center.y
-		self.anim.faceNeutralRight:draw(finalOffsetX,finalOffsetY)
-	end
 	
 	-- Draw the arm + gun
-	
+	--[[
 	if self.anim.facing == "left" then
-		gfx.draw( self.anim.gunLeftImg, offsetX, offsetY, 0, 1, 1, self.anim.gunLeft.center.x, self.anim.gunLeft.center.y )
+		gfx.draw( self.anim.gunLeftImg, offset.x, offset.y, 0, 1, 1, self.anim.gunLeft.center.x, self.anim.gunLeft.center.y )
 	else
-		gfx.draw( self.anim.gunRightImg, offsetX, offsetY, 0, 1, 1, self.anim.gunRight.center.x, self.anim.gunRight.center.y )
+		gfx.draw( self.anim.gunRightImg, offset.x, offset.y, 0, 1, 1, self.anim.gunRight.center.x, self.anim.gunRight.center.y )
 	end
-	
+	]]
     -- Draw their sobriety meter.
     love.graphics.setColor(255, 200, 0, 255)
     love.graphics.rectangle("fill",
