@@ -9,6 +9,7 @@ local PubMate = require "entities.pubmate"
 local Bro = require "entities.bro"
 local DrunkCam = require "entities.drunkcam"
 local AnAL = require "AnAL.AnAL"
+local Crosshair = require "fx.crosshair"
 
 local PlayState = Gamestate.new()
 
@@ -32,8 +33,12 @@ function PlayState:init()
     -- Load the entity manager.
     self.entities = EntityManager()
 
+    -- Create the camera.
+    self.cam = DrunkCam()
+    self.entities:register(self.cam)
+
     -- Load the player.
-    self.player = Player(self.collider)
+    self.player = Player(self.collider, self.cam.camera)
     self.player.shape:moveTo(250, 0)
     self.entities:register(self.player)
 
@@ -53,23 +58,26 @@ function PlayState:init()
        self.entities:register(self.bros[i])
     end
     
-    -- Load the drunk camera.
-    self.cam = DrunkCam()
-    local playerX, playerY = self.player.shape:center()
-    self.cam:teleport(Vector(playerX, playerY))
-    self.entities:register(self.cam)
+    -- Move the drunk camera.
+    self.cam:teleport(Vector(self.player.shape:center()))
+
+    -- Load the crosshair.
+    self.crosshair = Crosshair()
 
     self.score=0
-    
-    -- Reset transient game state.
-    self:reset()
 end
 
-function PlayState:reset()
+function PlayState:enter(previous)
+    love.mouse.setVisible(false)
+
     self.lastFpsTime = 0
 
     -- Reset all entities.
     self.entities:reset()
+end
+
+function PlayState:leave()
+    love.mouse.setVisible(true)
 end
 
 function PlayState:update(dt)
@@ -84,6 +92,9 @@ function PlayState:update(dt)
     -- Keep the camera focused on the player.
     local focusX, focusY = self.player.shape:center()
     self.cam:focus(Vector(focusX, focusY))
+
+    -- Update the crosshair.
+    self.crosshair:update(dt)
 
     -- Update FPS in window title (if DEBUG MODE is on).
     if Constants.DEBUG_MODE then
@@ -101,13 +112,14 @@ function PlayState:update(dt)
 end
 
 function PlayState:draw()
-
     self.cam:attach()
 
     self.map:draw()
     self.entities:draw()
 
     self.cam:detach()
+
+    self.crosshair:draw()
 end
 
 function PlayState:keypressed(key)
