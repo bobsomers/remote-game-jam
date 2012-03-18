@@ -59,7 +59,7 @@ end)
 function Player:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
-    self.drunk = 100
+    self.drunk = 0
     self.anim.current = "jumping"
     self.gunDirection = Vector(1, 0)
     self.jumping = false

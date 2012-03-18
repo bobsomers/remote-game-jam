@@ -62,10 +62,6 @@ function Bro:attackPlayer(player, mtv)
         player.health = player.health - self.PUNCH_DAMAGE
         self.punchCooldown = Constants.BRO_PUNCH_COOLDOWN
     end
-
-    -- Resolve the collision by moving them 10x the MTV away from each other.
-    self.shape:move(5 * mtv.x, 5 * mtv.y)
-    player.shape:move(-5 * mtv.x, -5 * mtv.y)
 end
 
 function Bro:attackPubmate(pubmate, mtv)
