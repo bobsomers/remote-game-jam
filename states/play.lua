@@ -33,6 +33,22 @@ function PlayState:init()
     self.player.shape:moveTo(250, 0)
     self.entities:register(self.player)
 
+    -- Load pubmates
+    self.pubmates = {}
+    for i=1, 20 do
+       self.pubmates[i] = PubMate(self.collider)
+       self.pubmates[i].shape:moveTo(250 + i*10, 0)
+       self.entities:register(self.pubmates[i])
+    end
+    
+    -- Load bros
+    self.bros = {}
+    for i=1, 20 do
+       self.bros[i] = Bro(self.collider)
+       self.bros[i].shape:moveTo(1000 + i*10, 0)
+       self.entities:register(self.bros[i])
+    end
+    
     -- Load the drunk camera.
     self.cam = DrunkCam()
     local playerX, playerY = self.player.shape:center()
@@ -51,6 +67,8 @@ function PlayState:reset()
 end
 
 function PlayState:update(dt)
+    dt = math.min(dt, 1/15) -- Minimum 15 FPS.
+
     -- Update all entities.
     self.entities:update(dt)
 
@@ -132,6 +150,19 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     -- Dispatch the appropriate collision resolver.
     if player and world then
         player:collideWorld(world, Vector(mtvX, mtvY))
+    elseif pubmate and world then
+        pubmate:collideWorld(world, Vector(mtvX, mtvY))
+        pubmate:jump()
+    elseif bro and world then
+        bro:collideWorld(world, Vector(mtvX, mtvY))
+        bro:jump()
+    elseif player and pubmate then
+        print("I love you, man!")
+    elseif player and bro then
+        print("Douchebag!")
+    elseif pubmate and bro then
+        pubmate:kill()
+        print("FFFUUUUUUUUU!!!")
     else
         print("No collision resolver for collision!")
     end
