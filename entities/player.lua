@@ -13,7 +13,7 @@ local Player = Class(function(self, collider)
     self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
 
     self.facing = "left"
-
+    
     self:reset()
 end)
 
@@ -21,16 +21,21 @@ function Player:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
     self.drunk = 100
+    self.jumping = false
 end
 
 function Player:jump()
-    --[[
     if self.velocity.y > 0 then
-        -- Can't jump!
         return
     end
-    --]]
-
+    
+    if self.velocity.y < 0 then     
+        return
+    end
+    
+    print("Jumping!")
+    self.jumping = true
+    
     -- Apply some instantaneous velocity in the Y direction.
     local x, y = self.shape:center()
     self.shape:moveTo(x, y - 1)
@@ -44,6 +49,8 @@ function Player:collideWorld(tileShape, mtv)
     -- If we corrected the player in the Y direction, their Y velocity is 0.
     if mtv.y ~= 0 then
         self.velocity.y = 0
+        self.jumping = false
+        print("Not jumping!")
     end
 end
 
