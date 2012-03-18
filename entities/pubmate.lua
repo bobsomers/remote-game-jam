@@ -68,8 +68,8 @@ function PubMate:attackBro(bro, mtv)
     end
 
     -- Resolve the collision by moving them double the MTV away from each other.
-    self.shape:move(10 * mtv.x, 10 * mtv.y)
-    bro.shape:move(-10 * mtv.x, -10 * mtv.y)
+    self.shape:move(5 * mtv.x, 5 * mtv.y)
+    bro.shape:move(-5 * mtv.x, -5 * mtv.y)
 end
 
 function PubMate:update(dt)
