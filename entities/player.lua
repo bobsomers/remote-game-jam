@@ -32,25 +32,33 @@ local Player = Class(function(self, collider, camera)
 	self.anim["right"] = {}
 	-- Animation for idle standing position when facing left
 	self.anim["left"]["idle"] = {}
-	idleLeftImg = love.graphics.newImage("images/hero_stand_left.png")
+	idleLeftImg = love.graphics.newImage("images/hero/idle_left.png")
 	self.anim["left"]["idle"] = newAnimation(idleLeftImg, 32, 32, 0.3, 2)
 	self.anim["left"]["idle"].faceCenter = {
 		Vector(18, 29), 
 		Vector(18, 30)
 	}
+	self.anim["left"]["idle"].gunCenter = {
+		Vector(-32, 7), 
+		Vector(-32, 8)
+	}
 	
 	-- Animation for idle standing position when facing right
 	self.anim["right"]["idle"] = {}
-	idleRightImg = love.graphics.newImage("images/hero_stand_right.png")
+	idleRightImg = love.graphics.newImage("images/hero/idle_right.png")
 	self.anim["right"]["idle"] = newAnimation(idleRightImg, 32, 32, 0.3, 2)
 	self.anim["right"]["idle"].faceCenter = {
 		Vector(14, 29), 
 		Vector(14, 30)
 	}
+	self.anim["right"]["idle"].gunCenter = {
+		Vector(0, 7), 
+		Vector(0, 8)
+	}
 	
 	-- Animation for walking position when facing left
 	self.anim["left"]["walk"] = {}
-	walkLeftImg = love.graphics.newImage("images/hero_walk_left.png")
+	walkLeftImg = love.graphics.newImage("images/hero/walk_left.png")
 	self.anim["left"]["walk"] = newAnimation(walkLeftImg, 32, 32, 0.2, 4)
 	self.anim["left"]["walk"].faceCenter = {
 		Vector(16, 32), 
@@ -58,10 +66,16 @@ local Player = Class(function(self, collider, camera)
 		Vector(16, 32), 
 		Vector(17, 31)
 	}
+	self.anim["left"]["walk"].gunCenter = {
+		Vector(-34, 4), 
+		Vector(-32, 5), 
+		Vector(-34, 4), 
+		Vector(-34, 5)
+	}
 	
 	-- Animation for walking position when facing right
 	self.anim["right"]["walk"] = {}
-	walkRightImg = love.graphics.newImage("images/gen_walk_right.png")
+	walkRightImg = love.graphics.newImage("images/hero/walk_right.png")
 	self.anim["right"]["walk"] = newAnimation(walkRightImg, 32, 32, 0.2, 4)
 	self.anim["right"]["walk"].faceCenter = {
 		Vector(16, 32), 
@@ -69,10 +83,16 @@ local Player = Class(function(self, collider, camera)
 		Vector(16, 32), 
 		Vector(15, 31)
 	}
+	self.anim["right"]["walk"].gunCenter = {
+		Vector(4, 4), 
+		Vector(2, 5), 
+		Vector(2, 4), 
+		Vector(4 , 5)
+	}
 	
 	-- Animation for jumping when facing left
 	self.anim["left"]["jump"] = {}
-	jumpLeftImg = love.graphics.newImage("images/gen_jump_left.png")
+	jumpLeftImg = love.graphics.newImage("images/hero/jump_left.png")
 	self.anim["left"]["jump"] = newAnimation(jumpLeftImg, 64, 64, 0.1, 2)
 	self.anim["left"]["jump"]:setMode("once")
 	-- Don't question the magic.
@@ -80,10 +100,14 @@ local Player = Class(function(self, collider, camera)
 		Vector(34, 64-75),
 		Vector(34, 64-45)
 	}
+	self.anim["left"]["jump"].gunCenter = {
+		Vector(-17, 64-28), 
+		Vector(-17, 64-46)
+	}
 	
 	-- Animation for jumping when facing right
 	self.anim["right"]["jump"] = {}
-	jumpRightImg = love.graphics.newImage("images/gen_jump_right.png")
+	jumpRightImg = love.graphics.newImage("images/hero/jump_right.png")
 	self.anim["right"]["jump"] = newAnimation(jumpRightImg, 64, 64, 0.1, 2)
 	self.anim["right"]["jump"]:setMode("once")
 	-- Don't question the magic.
@@ -91,30 +115,32 @@ local Player = Class(function(self, collider, camera)
 		Vector(34, 64-75), 
 		Vector(34, 64-45)
 	}
+	self.anim["right"]["jump"].gunCenter = {
+		Vector(17, 64-28), 
+		Vector(17, 64-46)
+	}
 	
 	-- Animation for head (because I don't want to figure out how to draw with graphics
 	-- cause it's different than animations :| )
 	self.anim["left"]["head"] = {}
-	faceNeutralLeftImg = love.graphics.newImage("images/gen_head_left.png")
+	faceNeutralLeftImg = love.graphics.newImage("images/hero/head_left.png")
 	self.anim["left"]["head"] = newAnimation(faceNeutralLeftImg, 48, 48, 1, 1)
 	self.anim["left"]["head"].center = Vector(24, 8)
 	
 	self.anim["right"]["head"] = {}
-	faceNeutralRightImg = love.graphics.newImage("images/gen_head_right.png")
+	faceNeutralRightImg = love.graphics.newImage("images/hero/head_right.png")
 	self.anim["right"]["head"] = newAnimation(faceNeutralRightImg, 48, 48, 1, 1)
 	self.anim["right"]["head"].center = Vector(24, 8)
 	
 	-- left gun
 	self.anim["left"]["gun"] = {}
-	gunLeftImg = love.graphics.newImage("images/gun_left.png")
-	self.anim["left"]["gun"] = newAnimation(gunLeftImg, 48, 48, 1, 1)
-	self.anim["left"]["gun"].center = Vector(27, 2)
+	self.anim["left"]["gun"].img = love.graphics.newImage("images/hero/gun_left.png")
+	self.anim["left"]["gun"].center = Vector(27, 3)
 	
 	-- right gun
 	self.anim["right"]["gun"] = {}
-	gunRightImg = love.graphics.newImage("images/gun_right.png")
-	self.anim["right"]["gun"] = newAnimation(gunRightImg, 48, 48, 1, 1)
-	self.anim["right"]["gun"].center = Vector(27, 2)
+	self.anim["right"]["gun"].img = love.graphics.newImage("images/hero/gun_right.png")
+	self.anim["right"]["gun"].center = Vector(5, 3)
 	
 	-- Set default animation states
 	self.anim.current = "idle"
@@ -274,7 +300,7 @@ function Player:draw()
 	-- Get the current head animation
 	local currHeadAnim = self.anim[self.anim.facing]["head"]
 	
-	-- Get the offset of the head
+	-- Get the offset of the head (subtract headOffset.y because of inverted Y)
 	local finaloffset = Vector(
 				offset.x + headOffset.x - currHeadAnim.center.x,
 				offset.y - headOffset.y - currHeadAnim.center.y
@@ -283,15 +309,26 @@ function Player:draw()
 	-- Draw the head
 	currHeadAnim:draw(finaloffset.x,finaloffset.y)
 
+	-- Get the current gun animation
+	local currGun = self.anim[self.anim.facing]["gun"]
+	
+	-- Get current gun position
+	local gunOffset = currAnim.gunCenter[currAnim:getCurrentFrame()]
+	
+	local gunRotate = math.atan2(self.gunDirection.y, self.gunDirection.x)
+	
+	--Get the final offset
+	finalOffset = offset + gunOffset-- + self.anim[self.anim.facing]["gun"].center
+	
+	--local invert
+	--if self.anim[self.anim.facing] == left:
+	
 	
 	-- Draw the arm + gun
-	--[[
-	if self.anim.facing == "left" then
-		gfx.draw( self.anim.gunLeftImg, offset.x, offset.y, 0, 1, 1, self.anim.gunLeft.center.x, self.anim.gunLeft.center.y )
-	else
-		gfx.draw( self.anim.gunRightImg, offset.x, offset.y, 0, 1, 1, self.anim.gunRight.center.x, self.anim.gunRight.center.y )
-	end
-	]]
+	gfx.draw( currGun.img, finalOffset.x, finalOffset.y, gunRotate - (0*3.14), 1, 1, self.anim[self.anim.facing]["gun"].center.x,self.anim[self.anim.facing]["gun"].center.y )
+	--gfx.draw( currGun.img, finalOffset.x, finalOffset.y, 0, 1, 1, 0,0 )
+
+
     -- Draw their sobriety meter.
     love.graphics.setColor(255, 200, 0, 255)
     love.graphics.rectangle("fill",
