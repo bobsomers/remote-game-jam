@@ -153,7 +153,7 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="100" height="100">
+ <layer name="world" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJzt19tO2zAABmAPBqs4TDBg43gBEhu7Grz/DY+GrcTCBCe0YW0p/T7pl6o0R/+JlYQAAAAAAADAWCcxXyvZWOZJranUxWXMYcxum+OYScxZ0M0ilV3sFMuvwnMnOWO7+RVzEPO93XY7hMfTEed6O/L4H015Hd2kLtJY71W2S53s9mSnsn7Nn9B0sRU7OA8ve/05cK6/K8vy9n3nuwrStUymyDyuL3WRn4k8lg/FMS/C6/uj21m3h5xVlLqoXUst5fX33btDvoT68zft8WfNqpmli1rSvZvn6L6xXsS4f4Y+hrq4jvkWc9PzfzmnbLX72x5Yd1lZFd0u8vjX0tfJUWi6uG/3+S80nfzoWX+d+nhrnuibN4Z6qHVy3f7udpGlTjbD8ntYdh9jz/dvaMY7v2/ehen6KVNK+xnbx2fynnuo+z55OcN2+6HpMMmdztrHuprHfJDef9N3dOohf1tP+w7F/+uh/F4rv0lq/+th2DyeE8/DYukBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICP6gkIMxro
   </data>
