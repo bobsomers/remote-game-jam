@@ -29,8 +29,12 @@ function PlayState:init()
     -- Load the entity manager.
     self.entities = EntityManager()
 
+    -- Create the camera.
+    self.cam = DrunkCam()
+    self.entities:register(self.cam)
+
     -- Load the player.
-    self.player = Player(self.collider)
+    self.player = Player(self.collider, self.cam.camera)
     self.player.shape:moveTo(250, 0)
     self.entities:register(self.player)
 
@@ -50,11 +54,8 @@ function PlayState:init()
        self.entities:register(self.bros[i])
     end
     
-    -- Load the drunk camera.
-    self.cam = DrunkCam()
-    local playerX, playerY = self.player.shape:center()
-    self.cam:teleport(Vector(playerX, playerY))
-    self.entities:register(self.cam)
+    -- Move the drunk camera.
+    self.cam:teleport(Vector(self.player.shape:center()))
 
     -- Load the crosshair.
     self.crosshair = Crosshair()

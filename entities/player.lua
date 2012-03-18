@@ -2,12 +2,16 @@ local Class = require "hump.class"
 local Vector = require "hump.vector"
 local Constants = require "constants"
 
-local Player = Class(function(self, collider)
-    self.SIZE = Vector(32, 64)
+local Player = Class(function(self, collider, camera)
+    self.collider = collider
+    self.camera = camera
 
-    self.shape = collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
+    self.SIZE = Vector(32, 64)
+    self.GUN_SIZE = Vector(32, 16)
+
+    self.shape = self.collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "player"
-    collider:addToGroup("player", self.shape)
+    self.collider:addToGroup("player", self.shape)
 
     self.MOVE_SPEED = Constants.PLAYER_SPEED
     self.JUMP_VELOCITY = -Constants.PLAYER_JUMP
@@ -21,6 +25,7 @@ function Player:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
     self.drunk = 100
+    self.gunDirection = Vector(1, 0)
 end
 
 function Player:jump()
@@ -75,11 +80,16 @@ function Player:update(dt)
     self.velocity.y = self.velocity.y + (Constants.GRAVITY * dt)
 
     self.shape:moveTo(posX, posY)
+
+    -- Gun faces the mouse cursor.
+    local mousePos = self.camera:worldCoords(Vector(love.mouse.getPosition()))
+    self.gunDirection.x = mousePos.x - posX
+    self.gunDirection.y = mousePos.y - posY
+    self.gunDirection:normalize_inplace()
 end
 
 function Player:draw()
-    local posX, posY = self.shape:center()
-    local position = Vector(posX, posY)
+    local position = Vector(self.shape:center())
 
     love.graphics.setColor(255, 0, 0, 255)
     self.shape:draw("fill") -- for debugging
@@ -97,6 +107,17 @@ function Player:draw()
         position.x - (self.SIZE.x / 2), position.y - (self.SIZE.y / 2) - 12,
         self.health / 100 * self.SIZE.x, 4
     )
+
+    -- Draw their gun.
+    love.graphics.setColor(255, 255, 0, 255)
+    love.graphics.push()
+    love.graphics.translate(position.x, position.y)
+    love.graphics.rotate(math.atan2(self.gunDirection.y, self.gunDirection.x))
+    love.graphics.rectangle("fill",
+        -self.GUN_SIZE.y / 2, -self.GUN_SIZE.y / 2,
+        self.GUN_SIZE.x, self.GUN_SIZE.y
+    )
+    love.graphics.pop()
 
     love.graphics.setColor(255, 255, 255, 255)
 end
