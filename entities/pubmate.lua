@@ -3,11 +3,13 @@ local Vector = require "hump.vector"
 local Constants = require "constants"
 
 local PubMate = Class(function(self, collider)
+    self.collider = collider
+
     self.SIZE = Vector(32, 64)
 
-    self.shape = collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
+    self.shape = self.collider:addRectangle(0, 0, self.SIZE.x, self.SIZE.y)
     self.shape.kind = "pubmate"
-    collider:addToGroup("pubmate", self.shape)
+    self.collider:addToGroup("pubmate", self.shape)
 
     self.MOVE_SPEED = (Constants.PLAYER_SPEED / 4)
     self.JUMP_VELOCITY = (-Constants.PLAYER_JUMP / 4)
@@ -19,12 +21,18 @@ function PubMate:reset()
     self.velocity = Vector(0, 0)
     self.DRUNK_DRAIN_RATE = math.random(Constants.PUBMATE_DRUNK_DRAIN_RATE_MIN,
         Constants.PUBMATE_DRUNK_DRAIN_RATE_MAX)
+    self.PUNCH_DAMAGE = math.random(Constants.PUBMATE_PUNCH_DAMAGE_MIN,
+        Constants.PUBMATE_PUNCH_DAMAGE_MAX)
     self.health = 100
     self.drunk = 100
+    self.alive = true
+    self.collider:setSolid(self.shape)
+    self.punchCooldown = 0
 end
 
 function PubMate:kill()
-    self.shape:moveTo(10000,10000)
+    self.alive = false
+    self.collider:setGhost(self.shape)
 end
 
 function PubMate:jump()
@@ -51,7 +59,28 @@ function PubMate:collideWorld(tileShape, mtv)
     end
 end
 
+function PubMate:attackBro(bro, mtv)
+    -- Damage the bro.
+    if self.punchCooldown < 0 then
+        bro.health = bro.health - self.PUNCH_DAMAGE
+        self.punchCooldown = Constants.PUBMATE_PUNCH_COOLDOWN
+    end
+
+    -- Resolve the collision by moving them 10x the MTV away from each other.
+    self.shape:move(5 * mtv.x, 5 * mtv.y)
+    bro.shape:move(-5 * mtv.x, -5 * mtv.y)
+end
+
 function PubMate:update(dt)
+    if not self.alive then return end
+    if self.health <= 0 then
+        self:kill()
+        return
+    end
+
+    -- Reduce their punch cooldown.
+    self.punchCooldown = self.punchCooldown - dt
+
     -- Slowly drain the player's drunkeness over time.
     self.drunk = self.drunk - (self.DRUNK_DRAIN_RATE * dt)
     if self.drunk < 0 then
@@ -74,6 +103,8 @@ function PubMate:update(dt)
 end
 
 function PubMate:draw()
+    if not self.alive then return end
+
     local posX, posY = self.shape:center()
     local position = Vector(posX, posY)
 
