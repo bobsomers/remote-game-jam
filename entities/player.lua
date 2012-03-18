@@ -22,10 +22,18 @@ local Player = Class(function(self, collider, camera)
 	-- Animation for idle standing position when facing left
 	self.anim.idleLeftImg = love.graphics.newImage("images/gen_stand_left.png")
 	self.anim.idleLeft = newAnimation(self.anim.idleLeftImg, 32, 32, 0.3, 2)
+	self.anim.idleLeft.faceCenter = {
+		{x=18, y=29}, 
+		{x=18, y=30}
+	}
 	
 	-- Animation for idle standing position when facing right
 	self.anim.idleRightImg = love.graphics.newImage("images/gen_stand_right.png")
 	self.anim.idleRight = newAnimation(self.anim.idleRightImg, 32, 32, 0.3, 2)
+	self.anim.idleRight.faceCenter = {
+		{x=14, y=29}, 
+		{x=14, y=30}
+	}
 	
 	-- Animation for idle walking position when facing left
 	self.anim.walkLeftImg = love.graphics.newImage("images/gen_walk_left.png")
@@ -48,6 +56,8 @@ local Player = Class(function(self, collider, camera)
 	self.anim.jumpRightImg = love.graphics.newImage("images/gen_jump_right.png")
 	self.anim.jumpRight = newAnimation(self.anim.jumpRightImg, 64, 64, 0.2, 2)
 	self.anim.jumpRight:setMode("once")
+	
+	self.anim.faceNeutral = love.graphics.newImage("images/gen_head.png")
 	
 	-- Set default animation states
 	self.anim.current = "idle"
@@ -179,6 +189,7 @@ end
 function Player:draw()
     local position = Vector(self.shape:center())
 	
+	-- Retrieve our location
     local posX, posY = self.shape:center()
 	if self.anim.facing == "left" then
 		if self.anim.current == "walking" then
