@@ -17,6 +17,8 @@ end)
 
 function Player:reset()
     self.velocity = Vector(0, 0)
+    self.health = 100
+    self.drunk = 100
 end
 
 function Player:jump()
@@ -44,6 +46,13 @@ function Player:collideWorld(tileShape, mtv)
 end
 
 function Player:update(dt)
+    -- Slowly drain the player's drunkeness over time.
+    self.drunk = self.drunk - (Constants.PLAYER_DRUNK_DRAIN_RATE * dt)
+    if self.drunk < 0 then
+        self.drunk = 0
+        -- TODO: you lose!
+    end
+
     -- Check for keyboard input.
     self.velocity.x = 0
     if love.keyboard.isDown("a") then
@@ -65,8 +74,26 @@ function Player:update(dt)
 end
 
 function Player:draw()
+    local posX, posY = self.shape:center()
+    local position = Vector(posX, posY)
+
     love.graphics.setColor(255, 0, 0, 255)
     self.shape:draw("fill") -- for debugging
+
+    -- Draw their sobriety meter.
+    love.graphics.setColor(255, 200, 0, 255)
+    love.graphics.rectangle("fill",
+        position.x - (self.SIZE.x / 2), position.y - (self.SIZE.y / 2) - 6,
+        self.drunk / 100 * self.SIZE.x, 4
+    )
+
+    -- Draw their health meter.
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.rectangle("fill",
+        position.x - (self.SIZE.x / 2), position.y - (self.SIZE.y / 2) - 12,
+        self.health / 100 * self.SIZE.x, 4
+    )
+
     love.graphics.setColor(255, 255, 255, 255)
 end
 

@@ -17,6 +17,10 @@ end)
 
 function PubMate:reset()
     self.velocity = Vector(0, 0)
+    self.DRUNK_DRAIN_RATE = math.random(Constants.PUBMATE_DRUNK_DRAIN_RATE_MIN,
+        Constants.PUBMATE_DRUNK_DRAIN_RATE_MAX)
+    self.health = 100
+    self.drunk = 100
 end
 
 function PubMate:kill()
@@ -48,6 +52,13 @@ function PubMate:collideWorld(tileShape, mtv)
 end
 
 function PubMate:update(dt)
+    -- Slowly drain the player's drunkeness over time.
+    self.drunk = self.drunk - (self.DRUNK_DRAIN_RATE * dt)
+    if self.drunk < 0 then
+        self.drunk = 0
+        -- TODO: pubmate dies!
+    end
+
     -- Always be moving right
     self.velocity.x = self.MOVE_SPEED
 
@@ -63,8 +74,26 @@ function PubMate:update(dt)
 end
 
 function PubMate:draw()
+    local posX, posY = self.shape:center()
+    local position = Vector(posX, posY)
+
     love.graphics.setColor(0, 255, 0, 255)
     self.shape:draw("fill") -- for debugging
+
+    -- Draw their sobriety meter.
+    love.graphics.setColor(255, 200, 0, 255)
+    love.graphics.rectangle("fill",
+        position.x - (self.SIZE.x / 2), position.y - (self.SIZE.y / 2) - 6,
+        self.drunk / 100 * self.SIZE.x, 4
+    )
+
+    -- Draw their health meter.
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.rectangle("fill",
+        position.x - (self.SIZE.x / 2), position.y - (self.SIZE.y / 2) - 12,
+        self.health / 100 * self.SIZE.x, 4
+    )
+
     love.graphics.setColor(255, 255, 255, 255)
 end
 

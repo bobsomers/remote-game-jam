@@ -35,17 +35,17 @@ function PlayState:init()
 
     -- Load pubmates
     self.pubmates = {}
-    for i=1, 20 do
+    for i=1, 5 do
        self.pubmates[i] = PubMate(self.collider)
-       self.pubmates[i].shape:moveTo(250 + i*10, 0)
+       self.pubmates[i].shape:moveTo(250 + i*42, 0)
        self.entities:register(self.pubmates[i])
     end
     
     -- Load bros
     self.bros = {}
-    for i=1, 20 do
+    for i=1, 5 do
        self.bros[i] = Bro(self.collider)
-       self.bros[i].shape:moveTo(1000 + i*10, 0)
+       self.bros[i].shape:moveTo(1000 + i*42, 0)
        self.entities:register(self.bros[i])
     end
     
