@@ -8,6 +8,7 @@ local Player = require "entities.player"
 local PubMate = require "entities.pubmate"
 local Bro = require "entities.bro"
 local DrunkCam = require "entities.drunkcam"
+local Crosshair = require "fx.crosshair"
 
 local PlayState = Gamestate.new()
 
@@ -55,15 +56,21 @@ function PlayState:init()
     self.cam:teleport(Vector(playerX, playerY))
     self.entities:register(self.cam)
 
-    -- Reset transient game state.
-    self:reset()
+    -- Load the crosshair.
+    self.crosshair = Crosshair()
 end
 
-function PlayState:reset()
+function PlayState:enter(previous)
+    love.mouse.setVisible(false)
+
     self.lastFpsTime = 0
 
     -- Reset all entities.
     self.entities:reset()
+end
+
+function PlayState:leave()
+    love.mouse.setVisible(true)
 end
 
 function PlayState:update(dt)
@@ -78,6 +85,9 @@ function PlayState:update(dt)
     -- Keep the camera focused on the player.
     local focusX, focusY = self.player.shape:center()
     self.cam:focus(Vector(focusX, focusY))
+
+    -- Update the crosshair.
+    self.crosshair:update(dt)
 
     -- Update FPS in window title (if DEBUG MODE is on).
     if Constants.DEBUG_MODE then
@@ -95,13 +105,14 @@ function PlayState:update(dt)
 end
 
 function PlayState:draw()
-
     self.cam:attach()
 
     self.map:draw()
     self.entities:draw()
 
     self.cam:detach()
+
+    self.crosshair:draw()
 end
 
 function PlayState:keypressed(key)
