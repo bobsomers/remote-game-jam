@@ -64,10 +64,9 @@ function PubMate:attackBro(bro, mtv)
     if self.punchCooldown < 0 then
         bro.health = bro.health - self.PUNCH_DAMAGE
         self.punchCooldown = Constants.PUBMATE_PUNCH_COOLDOWN
-        print("PUBMATE PUNCH")
     end
 
-    -- Resolve the collision by moving them double the MTV away from each other.
+    -- Resolve the collision by moving them 10x the MTV away from each other.
     self.shape:move(5 * mtv.x, 5 * mtv.y)
     bro.shape:move(-5 * mtv.x, -5 * mtv.y)
 end

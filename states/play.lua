@@ -207,7 +207,11 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     elseif player and pubmate then
         -- Nothing to do.
     elseif player and bro then
-        print("Douchebag!")
+        if broIndex == 2 then
+            mtvX = -mtvX
+            mtvY = -mtvY
+        end
+        bro:attackPlayer(player, Vector(mtvX, mtvY))
     elseif pubmate and bro then
         -- Random chance as to who attacks who.
         if math.random() < 0.5 then

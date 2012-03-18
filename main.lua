@@ -1,3 +1,6 @@
+-- Seed the randomness!
+math.randomseed(os.time())
+
 local Gamestate = require "hump.gamestate"
 local PlayState = require "states.play"
 
