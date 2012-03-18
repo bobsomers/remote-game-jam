@@ -27,8 +27,9 @@ function PlayState:init()
     -- Setup passive collision shapes for tiles in the collidable layer.
     self:setupTileCollisions("world")
     
-    -- Setup passive collision shapes for tiles in the pub-trigger layer.
+    -- Setup passive collision shapes for tiles in the pub-trigger and the bonus-trigger layers.
     self:setupTileCollisions("pub")
+    self:setupTileCollisions("bonus")
 
     -- Load the entity manager.
     self.entities = EntityManager()
@@ -44,7 +45,7 @@ function PlayState:init()
 
     -- Load pubmates
     self.pubmates = {}
-    for i=1, 20 do
+    for i=1, 6 do
        self.pubmates[i] = PubMate(self.collider)
        self.pubmates[i].shape:moveTo(20 + i*64, 0)
        self.entities:register(self.pubmates[i])
@@ -52,9 +53,9 @@ function PlayState:init()
     
     -- Load bros
     self.bros = {}
-    for i=1, 20 do
+    for i=1, 50 do
        self.bros[i] = Bro(self.collider)
-       self.bros[i].shape:moveTo(2000 + i*64, 0)
+       self.bros[i].shape:moveTo(2200 + i*64, 0)
        self.entities:register(self.bros[i])
     end
     
@@ -190,6 +191,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             pub = shape1
         elseif shape1.kind == "beer" then
             beer = shape1
+        elseif shape1.kind == "bonus" then
+            bonus = shape1
         else
             print("Unknown shape kind " .. shape1.kind .. "?")
         end
@@ -214,6 +217,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             pub = shape2
         elseif shape2.kind == "beer" then
             beer = shape2
+        elseif shape2.kind == "bonus" then
+            bonus = shape2
         else
             print("Unknown shape kind " .. shape2.kind .. "?")
         end
@@ -274,9 +279,13 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             end
             beer.used = true
         --end
+    elseif player and bonus then
+        self.score = self.score + 10000
+        print(self.score)
     elseif pubmate and pub then
         pubmate:kill()
         self.score = self.score + 1
+        print(self.score)
     else
         --print("No collision resolver for collision!")
     end
@@ -320,6 +329,14 @@ function PlayState:setupTileCollisions(layerName)
                         self.collider:addToGroup(layerName, shape)
                         self.collider:setPassive(shape)
                     elseif tile.properties.pub then
+                        local shape = self.collider:addRectangle(
+                            (x - 1) * 32, (y - 1) * 32,
+                            32, 32
+                        )
+                        shape.kind = layerName
+                        self.collider:addToGroup(layerName, shape)
+                        self.collider:setPassive(shape)
+                    elseif tile.properties.bonus then
                         local shape = self.collider:addRectangle(
                             (x - 1) * 32, (y - 1) * 32,
                             32, 32
