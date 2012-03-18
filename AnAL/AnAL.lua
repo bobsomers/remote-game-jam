@@ -1,6 +1,4 @@
-
-<!-- saved from url=(0066)https://raw.github.com/bartbes/love-misc-libs/master/AnAL/AnAL.lua -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">--[[
+--[[
 Copyright (c) 2009-2010 Bart Bes
 
 Permission is hereby granted, free of charge, to any person
