@@ -167,7 +167,7 @@ function PlayState:mousereleased(x, y, button)
 end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
-    local player, pubmate, bro, world
+    local player, pubmate, bro, world, beer
     local playerIndex, pubmateIndex, broIndex
     
     -- What is shape1?
@@ -185,6 +185,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             world = shape1
         elseif shape1.kind == "pub" then
             pub = shape1
+        elseif shape1.kind == "beer" then
+            beer = shape1
         else
             print("Unknown shape kind " .. shape1.kind .. "?")
         end
@@ -207,6 +209,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             world = shape2
         elseif shape2.kind == "pub" then
             pub = shape2
+        elseif shape2.kind == "beer" then
+            beer = shape2
         else
             print("Unknown shape kind " .. shape2.kind .. "?")
         end
@@ -261,8 +265,17 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     elseif pubmate and pub then
         pubmate:kill()
         print(self.score)
+    elseif beer and pubmate then
+        -- Watering the troops!
+        --if not beer.used then
+            pubmate.drunk = pubmate.drunk + Constants.BEER_BLOB_POINTS
+            if pubmate.drunk > 100 then
+                pubmate.drunk = 100
+            end
+            beer.used = true
+        --end
     else
-        print("No collision resolver for collision!")
+        --print("No collision resolver for collision!")
     end
 end
 

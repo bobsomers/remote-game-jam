@@ -49,6 +49,7 @@ function Beer:update(dt)
             shape.kind = "beer"
             shape.lifetime = Constants.BEER_BLOB_LIFETIME
             shape.velocity = self.player.gunDirection * Constants.BEER_BLOB_SPEED
+            shape.used = false
             self.collider:addToGroup("beer", shape)
             table.insert(self.blobs, shape)
 

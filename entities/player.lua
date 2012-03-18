@@ -99,7 +99,7 @@ function Player:reset()
     self.health = 100
     self.drunk = 100
 	self:updateAnim("right", "jumping")
-    self.drunk = 0
+    --self.drunk = 0
     self.gunDirection = Vector(1, 0)
 	self.jumpCount = self.MAX_JUMPS
 end
@@ -339,6 +339,7 @@ function Player:draw()
     )
 	
     -- Draw their gun.
+    --[[
     love.graphics.setColor(255, 255, 0, 255)
     love.graphics.push()
     love.graphics.translate(position.x, position.y)
@@ -348,6 +349,7 @@ function Player:draw()
         self.GUN_SIZE.x, self.GUN_SIZE.y
     )
     love.graphics.pop()
+    --]]
 
     love.graphics.setColor(255, 255, 255, 255)
 
