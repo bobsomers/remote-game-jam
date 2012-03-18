@@ -68,10 +68,10 @@ end
 function animation:update(dt)
 	if not self.playing then return end
 	self.timer = self.timer + dt * self.speed
-	if self.timer &gt; self.delays[self.position] then
+	if self.timer > self.delays[self.position] then
 		self.timer = self.timer - self.delays[self.position]
 		self.position = self.position + 1 * self.direction
-		if self.position &gt; #self.frames then
+		if self.position > #self.frames then
 			if self.mode == 1 then
 				self.position = 1
 			elseif self.mode == 2 then
@@ -81,7 +81,7 @@ function animation:update(dt)
 				self.direction = -1
 				self.position = self.position - 1
 			end
-		elseif self.position &lt; 1 and self.mode == 3 then
+		elseif self.position < 1 and self.mode == 3 then
 			self.direction = 1
 			self.position = self.position + 1
 		end

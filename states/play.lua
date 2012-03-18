@@ -8,6 +8,7 @@ local Player = require "entities.player"
 local PubMate = require "entities.pubmate"
 local Bro = require "entities.bro"
 local DrunkCam = require "entities.drunkcam"
+local AnAL = require "AnAL.AnAL"
 
 local PlayState = Gamestate.new()
 
