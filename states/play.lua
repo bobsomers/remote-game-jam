@@ -65,6 +65,10 @@ function PlayState:init()
     -- Load the crosshair.
     self.crosshair = Crosshair()
 
+    -- Load the background music.
+    self.music = love.audio.newSource("sounds/music.mp3", "stream")
+    self.music:setVolume(0.5)
+
     self.score=0
     
 end
@@ -76,6 +80,10 @@ function PlayState:enter(previous)
 
     -- Reset all entities.
     self.entities:reset()
+
+    -- Play the background music.
+    self.music:rewind()
+    self.music:play()
 end
 
 function PlayState:leave()

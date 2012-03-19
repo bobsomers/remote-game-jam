@@ -154,7 +154,7 @@ end)
 function Player:reset()
     self.velocity = Vector(0, 0)
     self.health = 100
-    self.drunk = 0
+    self.drunk = 100
 	self:changeAnim("right", "jump")
     self.gunDirection = Vector(1, 0)
 	self.jumpCount = self.MAX_JUMPS
