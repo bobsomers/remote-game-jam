@@ -18,7 +18,7 @@ local Bro = Class(function(self, collider)
     self.MOVE_SPEED = (Constants.PLAYER_SPEED / 8)
     self.JUMP_VELOCITY = (-Constants.PLAYER_JUMP / 8)
 
-    ----------------------------------------------------------------------------
+     ----------------------------------------------------------------------------
 	-- Animation shenanegans 
 	----------------------------------------------------------------------------
 	self.anim = {}
@@ -26,7 +26,7 @@ local Bro = Class(function(self, collider)
 	self.anim["right"] = {}
 	-- Animation for idle standing position when facing left
 	self.anim["left"]["idle"] = {}
-	idleLeftImg = love.graphics.newImage("images/hero/idle_left.png")
+	idleLeftImg = love.graphics.newImage("images/gen_stand_left.png")
 	self.anim["left"]["idle"] = newAnimation(idleLeftImg, 32, 32, 0.3, 2)
 	self.anim["left"]["idle"].faceCenter = {
 		Vector(18, 29), 
@@ -39,7 +39,7 @@ local Bro = Class(function(self, collider)
 	
 	-- Animation for idle standing position when facing right
 	self.anim["right"]["idle"] = {}
-	idleRightImg = love.graphics.newImage("images/hero/idle_right.png")
+	idleRightImg = love.graphics.newImage("images/gen_stand_right.png")
 	self.anim["right"]["idle"] = newAnimation(idleRightImg, 32, 32, 0.3, 2)
 	self.anim["right"]["idle"].faceCenter = {
 		Vector(14, 29), 
@@ -52,7 +52,7 @@ local Bro = Class(function(self, collider)
 	
 	-- Animation for walking position when facing left
 	self.anim["left"]["walk"] = {}
-	walkLeftImg = love.graphics.newImage("images/hero/walk_left.png")
+	walkLeftImg = love.graphics.newImage("images/gen_walk_left.png")
 	self.anim["left"]["walk"] = newAnimation(walkLeftImg, 32, 32, 0.2, 4)
 	self.anim["left"]["walk"].faceCenter = {
 		Vector(16, 32), 
@@ -69,7 +69,7 @@ local Bro = Class(function(self, collider)
 	
 	-- Animation for walking position when facing right
 	self.anim["right"]["walk"] = {}
-	walkRightImg = love.graphics.newImage("images/hero/walk_right.png")
+	walkRightImg = love.graphics.newImage("images/gen_walk_right.png")
 	self.anim["right"]["walk"] = newAnimation(walkRightImg, 32, 32, 0.2, 4)
 	self.anim["right"]["walk"].faceCenter = {
 		Vector(16, 32), 
@@ -86,7 +86,7 @@ local Bro = Class(function(self, collider)
 	
 	-- Animation for jumping when facing left
 	self.anim["left"]["jump"] = {}
-	jumpLeftImg = love.graphics.newImage("images/hero/jump_left.png")
+	jumpLeftImg = love.graphics.newImage("images/gen_jump_left.png")
 	self.anim["left"]["jump"] = newAnimation(jumpLeftImg, 64, 64, 0.1, 2)
 	self.anim["left"]["jump"]:setMode("once")
 	-- Don't question the magic.
@@ -101,7 +101,7 @@ local Bro = Class(function(self, collider)
 	
 	-- Animation for jumping when facing right
 	self.anim["right"]["jump"] = {}
-	jumpRightImg = love.graphics.newImage("images/hero/jump_right.png")
+	jumpRightImg = love.graphics.newImage("images/gen_jump_right.png")
 	self.anim["right"]["jump"] = newAnimation(jumpRightImg, 64, 64, 0.1, 2)
 	self.anim["right"]["jump"]:setMode("once")
 	-- Don't question the magic.
@@ -117,24 +117,14 @@ local Bro = Class(function(self, collider)
 	-- Animation for head (because I don't want to figure out how to draw with graphics
 	-- cause it's different than animations :| )
 	self.anim["left"]["head"] = {}
-	faceNeutralLeftImg = love.graphics.newImage("images/hero/head_left.png")
+	faceNeutralLeftImg = love.graphics.newImage("images/gen_head_left.png")
 	self.anim["left"]["head"] = newAnimation(faceNeutralLeftImg, 48, 48, 1, 1)
 	self.anim["left"]["head"].center = Vector(24, 8)
 	
 	self.anim["right"]["head"] = {}
-	faceNeutralRightImg = love.graphics.newImage("images/hero/head_right.png")
+	faceNeutralRightImg = love.graphics.newImage("images/gen_head_right.png")
 	self.anim["right"]["head"] = newAnimation(faceNeutralRightImg, 48, 48, 1, 1)
 	self.anim["right"]["head"].center = Vector(24, 8)
-	
-	-- left gun
-	self.anim["left"]["gun"] = {}
-	self.anim["left"]["gun"].img = love.graphics.newImage("images/hero/gun_left.png")
-	self.anim["left"]["gun"].center = Vector(27, 3)
-	
-	-- right gun
-	self.anim["right"]["gun"] = {}
-	self.anim["right"]["gun"].img = love.graphics.newImage("images/hero/gun_right.png")
-	self.anim["right"]["gun"].center = Vector(5, 3)
 	
 	-- Set default animation states
 	self.anim.current = "idle"
@@ -168,7 +158,7 @@ function Bro:jump()
     --]]
 
     -- set animation state
-	self:changeAnim(self.anim.facing, "jump")
+	-- self:changeAnim(self.anim.facing, "jump")
     
     -- Apply some instantaneous velocity in the Y direction.
     local x, y = self.shape:center()
@@ -215,7 +205,7 @@ function Bro:updateAnim(dt)
 end
 
 function Bro:resetAnim()
-	print("resetting " .. self.anim.facing .. "/" .. self.anim.current)
+	-- print("resetting " .. self.anim.facing .. "/" .. self.anim.current)
 	self.anim[self.anim.facing][self.anim.current]:reset()
 	self.anim[self.anim.facing][self.anim.current]:play()
 end 
