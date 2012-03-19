@@ -18,6 +18,7 @@ local Fire = Class(function(self, player, collider)
     self.particles:setLifetime(-1)
     self.particles:setParticleLife(0.3)
     self.particles:setSpread(math.pi / 10)
+    self.particles:stop()
 
     self:reset()
 end)
