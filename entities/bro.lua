@@ -232,10 +232,6 @@ end
 
 function Bro:update(dt)
     if not self.alive then return end
-    if self.health <= 0 then
-        self:kill()
-        return
-    end
 
     -- Reduce their punch cooldown.
     self.punchCooldown = self.punchCooldown - dt

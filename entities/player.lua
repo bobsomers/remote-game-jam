@@ -229,9 +229,12 @@ function Player:update(dt)
     -- Slowly drain the player's drunkeness over time.
     self.drunk = self.drunk - (Constants.PLAYER_DRUNK_DRAIN_RATE * dt)
     self.camera.drunk = self.drunk / 100
-    if self.drunk < 0 then
-        self.drunk = 0
-        -- TODO: you lose!
+    if self.drunk <= 0 then
+        self:kill()
+    end
+    
+    if self.health <=0 then
+        self:kill()
     end
 
     -- Check for keyboard input.
@@ -278,6 +281,12 @@ function Player:update(dt)
     self.beer:update(dt)
     self.fire:update(dt)
 end
+
+function Player:kill()
+   -- TODO: Fix
+   self.shape:moveTo(10000,10000)
+end
+
 
 function Player:draw()
     local position = Vector(self.shape:center())
@@ -330,7 +339,6 @@ function Player:draw()
 	-- Draw the arm + gun
 	gfx.draw( currGun.img, finalOffset.x, finalOffset.y, gunRotate - (invertRotation*3.14), 1, 1, self.anim[self.anim.facing]["gun"].center.x,self.anim[self.anim.facing]["gun"].center.y )
 	--gfx.draw( currGun.img, finalOffset.x, finalOffset.y, 0, 1, 1, 0,0 )
-
 
     -- Draw their sobriety meter.
     love.graphics.setColor(255, 200, 0, 255)
