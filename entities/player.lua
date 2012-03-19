@@ -39,8 +39,8 @@ local Player = Class(function(self, collider, camera)
 		Vector(18, 30)
 	}
 	self.anim["left"]["idle"].gunCenter = {
-		Vector(-32, 7), 
-		Vector(-32, 8)
+		Vector(23, 10), 
+		Vector(23, 9)
 	}
 	
 	-- Animation for idle standing position when facing right
@@ -52,8 +52,8 @@ local Player = Class(function(self, collider, camera)
 		Vector(14, 30)
 	}
 	self.anim["right"]["idle"].gunCenter = {
-		Vector(0, 7), 
-		Vector(0, 8)
+		Vector(10, 11), 
+		Vector(10, 10)
 	}
 	
 	-- Animation for walking position when facing left
@@ -67,10 +67,10 @@ local Player = Class(function(self, collider, camera)
 		Vector(17, 31)
 	}
 	self.anim["left"]["walk"].gunCenter = {
-		Vector(-34, 4), 
-		Vector(-32, 5), 
-		Vector(-34, 4), 
-		Vector(-34, 5)
+		Vector(20, 10), 
+		Vector(22, 9), 
+		Vector(20, 10), 
+		Vector(20, 9)
 	}
 	
 	-- Animation for walking position when facing right
@@ -84,10 +84,10 @@ local Player = Class(function(self, collider, camera)
 		Vector(15, 31)
 	}
 	self.anim["right"]["walk"].gunCenter = {
-		Vector(4, 4), 
-		Vector(2, 5), 
-		Vector(2, 4), 
-		Vector(4 , 5)
+		Vector(12, 10), 
+		Vector(10, 9), 
+		Vector(12, 10), 
+		Vector(10 , 9)
 	}
 	
 	-- Animation for jumping when facing left
@@ -101,8 +101,8 @@ local Player = Class(function(self, collider, camera)
 		Vector(34, 64-45)
 	}
 	self.anim["left"]["jump"].gunCenter = {
-		Vector(-17, 64-28), 
-		Vector(-17, 64-46)
+		Vector(36, 64-24), 
+		Vector(36, 64-40)
 	}
 	
 	-- Animation for jumping when facing right
@@ -116,8 +116,8 @@ local Player = Class(function(self, collider, camera)
 		Vector(34, 64-45)
 	}
 	self.anim["right"]["jump"].gunCenter = {
-		Vector(17, 64-28), 
-		Vector(17, 64-46)
+		Vector(28, 64-24), 
+		Vector(28, 64-40)
 	}
 	
 	-- Animation for head (because I don't want to figure out how to draw with graphics
@@ -320,12 +320,13 @@ function Player:draw()
 	--Get the final offset
 	finalOffset = offset + gunOffset-- + self.anim[self.anim.facing]["gun"].center
 	
-	--local invert
-	--if self.anim[self.anim.facing] == left:
-	
+	local invertRotation = 0
+	if self.anim.facing == "left" then
+		invertRotation = 1
+	end
 	
 	-- Draw the arm + gun
-	gfx.draw( currGun.img, finalOffset.x, finalOffset.y, gunRotate - (0*3.14), 1, 1, self.anim[self.anim.facing]["gun"].center.x,self.anim[self.anim.facing]["gun"].center.y )
+	gfx.draw( currGun.img, finalOffset.x, finalOffset.y, gunRotate - (invertRotation*3.14), 1, 1, self.anim[self.anim.facing]["gun"].center.x,self.anim[self.anim.facing]["gun"].center.y )
 	--gfx.draw( currGun.img, finalOffset.x, finalOffset.y, 0, 1, 1, 0,0 )
 
 
