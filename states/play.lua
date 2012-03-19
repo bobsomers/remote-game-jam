@@ -145,9 +145,9 @@ function PlayState:keypressed(key)
         self.player:jump()
     elseif key == "e" then
         self.player.drunk = self.player.drunk + Constants.PLAYER_DRINK_POINTS
-        if self.player.drunk > 100 then
-            self.player.drunk = 100
-        end
+        --if self.player.drunk > 100 then
+        --    self.player.drunk = 100
+        --end
     end
 end
 
