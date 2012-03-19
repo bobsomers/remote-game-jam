@@ -234,9 +234,9 @@ function PubMate:update(dt)
 
     -- Slowly drain the player's drunkeness over time.
     self.drunk = self.drunk - (self.DRUNK_DRAIN_RATE * dt)
-    if self.drunk < 0 then
-        self.drunk = 0
-        -- TODO: pubmate dies!
+    if self.drunk <= 0 then
+        self:kill()
+        return
     end
 
     -- Always be moving right

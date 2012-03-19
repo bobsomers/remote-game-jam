@@ -122,6 +122,10 @@ function PlayState:draw()
     self.cam:detach()
 
     self.crosshair:draw()
+    
+    -- Draw player score
+    local playX, playY = self.player.shape:center()
+    love.graphics.print(self.score, 10, 10)
 end
 
 function PlayState:keypressed(key)
@@ -153,6 +157,10 @@ function PlayState:mousepressed(x, y, button)
                 elseif shape.kind == "bro" then
                     local bro = self.entities:findByShape(shape)
                     bro.health = bro.health - Constants.PLAYER_PUNCH_DAMAGE
+                    if bro.health <= 0 then
+                       bro:kill()
+                       self.score = self.score + 10000
+                    end
                 end
             end
         end
@@ -281,12 +289,10 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
         end
         beer.used = true
     elseif player and bonus then
-        self.score = self.score + 10000
-        print(self.score)
+        self.score = self.score + 10
     elseif pubmate and pub then
         pubmate:kill()
-        self.score = self.score + 1
-        print(self.score)
+        self.score = self.score + 25000
     else
         --print("No collision resolver for collision!")
     end
