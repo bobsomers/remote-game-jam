@@ -3,6 +3,7 @@ local Vector = require "hump.vector"
 local Constants = require "constants"
 local gfx = love.graphics
 local Beer = require "entities.beer"
+local Fire = require "entities.fire"
 
 local Player = Class(function(self, collider, camera)
     self.collider = collider
@@ -19,6 +20,7 @@ local Player = Class(function(self, collider, camera)
     self.collider:addToGroup("player", self.shape)
 
     self.beer = Beer(self, collider)
+    self.fire = Fire(self, collider)
 
 	self.MAX_JUMPS = 2
     self.MOVE_SPEED = Constants.PLAYER_SPEED
@@ -272,8 +274,9 @@ function Player:update(dt)
     self.gunDirection.y = mousePos.y - posY
     self.gunDirection:normalize_inplace()
 
-    -- Update the beer.
+    -- Update the beer and fire.
     self.beer:update(dt)
+    self.fire:update(dt)
 end
 
 function Player:draw()
@@ -360,6 +363,7 @@ function Player:draw()
     love.graphics.setColor(255, 255, 255, 255)
 
     self.beer:draw()
+    self.fire:draw()
 end
 
 return Player

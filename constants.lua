@@ -43,4 +43,11 @@ Constants.BEER_BLOB_RADIUS = 15 -- Radius of individual beer blobs.
 Constants.BEER_BLOB_LIFETIME = 1 -- 1 second.
 Constants.BEER_BLOB_SPEED = 400 -- Speed of new blobs.
 
+-- Flamethrower constants.
+Constants.FIRE_COOLDOWN = 0.15 -- 0.15 seconds per fire blob
+Constants.FIRE_BLOB_DAMAGE = 2 -- Each fire blob damage 2 hit points.
+Constants.FIRE_BLOB_RADIUS = 15 -- Radius of individual fire blobs.
+Constants.FIRE_BLOB_LIFETIME = 0.3 -- 1 second.
+Constants.FIRE_BLOB_SPEED = 500 -- Speed of new blobs.
+
 return Constants
