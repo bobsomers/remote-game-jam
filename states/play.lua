@@ -53,9 +53,9 @@ function PlayState:init()
     
     -- Load bros
     self.bros = {}
-    for i=1, 10 do
+    for i=1, 60 do
        self.bros[i] = Bro(self.collider)
-       self.bros[i].shape:moveTo(2200 + i*64, 0)
+       self.bros[i].shape:moveTo(2200 + i*40, 0)
        self.entities:register(self.bros[i])
     end
     
@@ -304,7 +304,7 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
         self.score = self.score + 10
     elseif pubmate and pub then
         pubmate:kill()
-        self.score = self.score + 25000
+        self.score = self.score + 25000000
     else
         --print("No collision resolver for collision!")
     end
