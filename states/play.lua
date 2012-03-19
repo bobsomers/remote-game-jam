@@ -53,7 +53,7 @@ function PlayState:init()
     
     -- Load bros
     self.bros = {}
-    for i=1, 50 do
+    for i=1, 10 do
        self.bros[i] = Bro(self.collider)
        self.bros[i].shape:moveTo(2200 + i*64, 0)
        self.entities:register(self.bros[i])
@@ -140,8 +140,9 @@ function PlayState:keypressed(key)
 end
 
 function PlayState:mousepressed(x, y, button)
-    -- Left click does punch.
+    -- Left click does flamethrower.
     if button == "l" then
+<<<<<<< HEAD
         local x, y = self.player.shape:center()
         if self.player.anim.facing == "left" then
             x = x - (self.player.SIZE.x / 2) - Constants.PLAYER_REACH
@@ -164,6 +165,10 @@ function PlayState:mousepressed(x, y, button)
                 end
             end
         end
+=======
+        self.player.fire.firing = true
+        self.player.fire.particles:start()
+>>>>>>> ba8051c409c3bb99bdff0f0440b32008c6886835
     end
 
     -- Right click sprays beer.
@@ -174,6 +179,12 @@ function PlayState:mousepressed(x, y, button)
 end
 
 function PlayState:mousereleased(x, y, button)
+    -- Stop shooting fire.
+    if button == "l" then
+        self.player.fire.firing = false
+        self.player.fire.particles:stop()
+    end
+
     -- Stop spraying beer.
     if button == "r" then
         self.player.beer.spraying = false
@@ -182,7 +193,7 @@ function PlayState:mousereleased(x, y, button)
 end
 
 function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
-    local player, pubmate, bro, world, beer
+    local player, pubmate, bro, world, beer, fire
     local playerIndex, pubmateIndex, broIndex
     
     -- What is shape1?
@@ -202,6 +213,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             pub = shape1
         elseif shape1.kind == "beer" then
             beer = shape1
+        elseif shape1.kind == "fire" then
+            fire = shape1
         elseif shape1.kind == "bonus" then
             bonus = shape1
         else
@@ -228,6 +241,8 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             pub = shape2
         elseif shape2.kind == "beer" then
             beer = shape2
+        elseif shape2.kind == "fire" then
+            fire = shape2
         elseif shape2.kind == "bonus" then
             bonus = shape2
         else
@@ -288,6 +303,12 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
             pubmate.drunk = 100
         end
         beer.used = true
+    elseif fire and bro then
+        -- Enemy fire.
+        bro.health = bro.health - Constants.FIRE_BLOB_DAMAGE
+    elseif fire and pubmate then
+        -- Friendly fire.
+        pubmate.health = pubmate.health - Constants.FIRE_BLOB_DAMAGE
     elseif player and bonus then
         self.score = self.score + 10
     elseif pubmate and pub then
