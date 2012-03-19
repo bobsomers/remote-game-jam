@@ -30,10 +30,14 @@ function DrunkCam:update(dt)
     self.time = self.time + dt
 
     -- Update the zoom.
-    self.camera.zoom = (self.drunk * 0.1) * math.sin(2 * math.pi * (self.drunk * 0.5 + 0.5) * self.time) + 1
+    local zoomA = self.drunk * 0.1
+    local zoomF = 0.75
+    self.camera.zoom = zoomA * math.sin(2 * math.pi * zoomF * self.time) + 1
 
     -- Update rotation.
-    self.camera.rot = (self.drunk * math.pi / 13) * math.sin(2 * math.pi * (self.drunk * 0.4 + 0.1) * self.time)
+    local rotA = self.drunk * (math.pi / 13)
+    local rotF = 0.3
+    self.camera.rot = rotA * math.sin(2 * math.pi * rotF * self.time)
 
     local a = (self.target - self.camera.pos) * self.SPRING_K
 
