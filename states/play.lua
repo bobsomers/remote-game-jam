@@ -134,6 +134,10 @@ function PlayState:draw()
     -- Draw player score
     local playX, playY = self.player.shape:center()
     love.graphics.print(self.score, 10, 10)
+    
+    if self.player.alive == false then
+        love.graphics.print("You got sober. :(", 100, 100)
+    end
 end
 
 function PlayState:keypressed(key)

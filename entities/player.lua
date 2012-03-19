@@ -158,6 +158,7 @@ function Player:reset()
 	self:changeAnim("right", "jump")
     self.gunDirection = Vector(1, 0)
 	self.jumpCount = self.MAX_JUMPS
+   self.alive = true
 end
 
 function Player:jump()
@@ -285,6 +286,7 @@ end
 function Player:kill()
    -- TODO: Fix
    self.shape:moveTo(10000,10000)
+   self.alive = false
 end
 
 
