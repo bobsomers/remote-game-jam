@@ -129,6 +129,9 @@ function PlayState:keypressed(key)
         self.player:jump()
     elseif key == "e" then
         self.player.drunk = self.player.drunk + Constants.PLAYER_DRINK_POINTS
+        if self.player.drunk > 100 then
+            self.player.drunk = 100
+        end
     end
 end
 
@@ -272,13 +275,11 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
         end    
     elseif beer and pubmate then
         -- Watering the troops!
-        --if not beer.used then
-            pubmate.drunk = pubmate.drunk + Constants.BEER_BLOB_POINTS
-            if pubmate.drunk > 100 then
-                pubmate.drunk = 100
-            end
-            beer.used = true
-        --end
+        pubmate.drunk = pubmate.drunk + Constants.BEER_BLOB_POINTS
+        if pubmate.drunk > 100 then
+            pubmate.drunk = 100
+        end
+        beer.used = true
     elseif player and bonus then
         self.score = self.score + 10000
         print(self.score)
