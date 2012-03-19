@@ -142,33 +142,8 @@ end
 function PlayState:mousepressed(x, y, button)
     -- Left click does flamethrower.
     if button == "l" then
-<<<<<<< HEAD
-        local x, y = self.player.shape:center()
-        if self.player.anim.facing == "left" then
-            x = x - (self.player.SIZE.x / 2) - Constants.PLAYER_REACH
-        else
-            x = x + (self.player.SIZE.x / 2) + Constants.PLAYER_REACH
-        end
-        y = y - (self.player.SIZE.y / 4) -- 75% up the player's height
-        for _, shape in ipairs(self.collider:shapesAt(x, y)) do
-            if shape.kind then
-                if shape.kind == "pubmate" then
-                    local pubmate = self.entities:findByShape(shape)
-                    pubmate.health = pubmate.health - Constants.PLAYER_PUNCH_DAMAGE
-                elseif shape.kind == "bro" then
-                    local bro = self.entities:findByShape(shape)
-                    bro.health = bro.health - Constants.PLAYER_PUNCH_DAMAGE
-                    if bro.health <= 0 then
-                       bro:kill()
-                       self.score = self.score + 10000
-                    end
-                end
-            end
-        end
-=======
         self.player.fire.firing = true
         self.player.fire.particles:start()
->>>>>>> ba8051c409c3bb99bdff0f0440b32008c6886835
     end
 
     -- Right click sprays beer.
