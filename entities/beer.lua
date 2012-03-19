@@ -19,6 +19,7 @@ local Beer = Class(function(self, player, collider)
     self.particles:setParticleLife(Constants.BEER_BLOB_LIFETIME)
     self.particles:setSpread(math.pi / 16)
     self.particles:setGravity(Constants.GRAVITY)
+    self.particles:stop()
 
     self:reset()
 end)
