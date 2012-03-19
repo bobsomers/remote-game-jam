@@ -281,9 +281,17 @@ function PlayState:collide(dt, shape1, shape2, mtvX, mtvY)
     elseif fire and bro then
         -- Enemy fire.
         bro.health = bro.health - Constants.FIRE_BLOB_DAMAGE
+        if bro.health <= 0 then
+            bro:kill()
+            self.score = self.score + 10000
+        end
+        
     elseif fire and pubmate then
         -- Friendly fire.
         pubmate.health = pubmate.health - Constants.FIRE_BLOB_DAMAGE
+        if pubmate.health <= 0 then
+            pubmate:kill()
+        end
     elseif player and bonus then
         self.score = self.score + 10
     elseif pubmate and pub then
